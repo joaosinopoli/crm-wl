@@ -2,6 +2,7 @@ import { createClient } from '@/src/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { updateLead } from '@/src/app/actions/kanban'
+import type { CustomField, FunnelStep } from '@/src/types/crm'
 
 export default async function EditLeadPage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
@@ -117,7 +118,7 @@ export default async function EditLeadPage({ params }: { params: { id: string } 
                 defaultValue={lead.step_id}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
-                {steps?.map((step: any) => (
+                {steps?.map((step: FunnelStep) => (
                   <option key={step.id} value={step.id}>
                     {step.title}
                   </option>
@@ -140,7 +141,7 @@ export default async function EditLeadPage({ params }: { params: { id: string } 
             <div className="pt-4 border-t border-gray-100">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Informações Personalizadas</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {customFields.map((field: any) => (
+                {customFields.map((field: CustomField) => (
                   <div key={field.id}>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">{field.field_label}</label>
                     <input 

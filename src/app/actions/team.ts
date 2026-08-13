@@ -49,6 +49,9 @@ export async function createEmployee(formData: FormData) {
   if (!fullName || !email || !password) {
     return { success: false, error: 'Preencha todos os campos obrigatórios.' }
   }
+  if (role !== 'admin' && role !== 'sales') {
+    return { success: false, error: 'Função inválida.' }
+  }
 
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!serviceRoleKey) {
@@ -115,6 +118,20 @@ export async function updateEmployee(formData: FormData) {
   if (!employeeId || !fullName || !role) {
     return { success: false, error: 'ID, Nome e Função são obrigatórios.' }
   }
+  if (role !== 'admin' && role !== 'sales') {
+    return { success: false, error: 'Função inválida.' }
+  }
+  if (employeeId === user.id && role !== 'admin') {
+    return { success: false, error: 'Não é possível remover o seu próprio acesso de administrador.' }
+  }
+
+  const { data: targetProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', employeeId)
+    .eq('company_id', adminProfile.company_id)
+    .maybeSingle()
+  if (!targetProfile) return { success: false, error: 'Colaborador não pertence a esta empresa.' }
 
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!serviceRoleKey) {
@@ -132,6 +149,7 @@ export async function updateEmployee(formData: FormData) {
     .from('profiles')
     .update({ full_name: fullName, role })
     .eq('id', employeeId)
+    .eq('company_id', adminProfile.company_id)
 
   if (profileError) {
     return { success: false, error: 'Erro ao atualizar dados do perfil.' }

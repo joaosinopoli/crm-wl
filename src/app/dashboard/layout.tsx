@@ -17,19 +17,19 @@ export default async function DashboardLayout({
   const { data: profile } = await supabase.from('profiles').select(`full_name, role, company_id, companies (name, plan_type)`).eq('id', user.id).single()
   const { data: steps } = await supabase.from('funnel_steps').select('id, title, color, position').order('position', { ascending: true })
 
-  let customFields: any[] = []
+  let customFields: { id: string; field_key: string; field_label: string; field_type: string; position: number }[] = []
   if (profile?.company_id) {
     const { data: fieldsData } = await supabase.from('custom_field_definitions').select('id, field_key, field_label, field_type, position').eq('company_id', profile.company_id).order('position', { ascending: true })
     customFields = fieldsData || []
   }
 
-  let members: any[] = []
+  let members: { id: string; full_name: string; role: string }[] = []
   if (profile?.role === 'admin' && profile?.company_id) {
     const { data: membersData } = await supabase.from('profiles').select('id, full_name, role').eq('company_id', profile.company_id)
-    members = membersData || []
+    members = (membersData || []).map(member => ({ ...member, full_name: member.full_name || '' }))
   }
 
-  const companyName = (profile?.companies as any)?.name || 'CRM Workspace'
+  const companyName = (profile?.companies as { name?: string } | null)?.name || 'CRM Workspace'
   const userName = profile?.full_name || user.email || 'Usuário'
   const userRole = profile?.role || 'sales'
 
@@ -52,6 +52,9 @@ export default async function DashboardLayout({
           </Link>
           <Link href="/dashboard/agenda" className={navLinkStyle}>
             <span className="text-lg">📅</span> Agenda
+          </Link>
+          <Link href="/dashboard/tasks" className={navLinkStyle}>
+            <span className="text-lg">✅</span> Tarefas e Follow-ups
           </Link>
           <Link href="/dashboard/leads" className={navLinkStyle}>
             <span className="text-lg">👥</span> Clientes Ativos

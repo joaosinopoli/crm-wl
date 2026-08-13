@@ -2,21 +2,14 @@
 
 import { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
+import type { DropResult } from '@hello-pangea/dnd'
 import { updateLeadStep } from '@/src/app/actions/kanban'
+import type { CustomField, FunnelStep, Lead, Member } from '@/src/types/crm'
 import QuickNoteModal from '@/src/components/QuickNoteModal'
 import EditLeadModal from '@/src/components/EditLeadModal'
 import CloseLeadModal from '@/src/components/CloseLeadModal'
 
-type Step = { id: string; title: string; color: string }
-type Member = { id: string; full_name: string; role: string }
-type CustomField = { id: string; field_key: string; field_label: string; field_type: string; position?: number }
-type Lead = { 
-  id: string; step_id: string; name: string; email?: string | null; phone?: string | null; 
-  assigned_to?: string | null; custom_data?: Record<string, any> | null; observation?: string | null; lead_value?: number | null; status?: string;
-  created_at: string; profiles?: { full_name: string } | { full_name: string }[] | null;
-}
-
-export default function KanbanBoard({ initialSteps, initialLeads, members, userRole, customFields, currentUserId }: { initialSteps: Step[], initialLeads: Lead[], members: Member[], userRole: string, customFields: CustomField[], currentUserId: string }) {
+export default function KanbanBoard({ initialSteps, initialLeads, members, userRole, customFields, currentUserId }: { initialSteps: FunnelStep[], initialLeads: Lead[], members: Member[], userRole: string, customFields: CustomField[], currentUserId: string }) {
   const [steps] = useState(initialSteps)
   const [leads, setLeads] = useState(initialLeads)
   const [selectedAssignee, setSelectedAssignee] = useState<string>('all')
@@ -27,7 +20,7 @@ export default function KanbanBoard({ initialSteps, initialLeads, members, userR
     setExpandedCards(prev => ({ ...prev, [id]: !prev[id] }))
   }
 
-  const onDragEnd = async (result: any) => {
+  const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return

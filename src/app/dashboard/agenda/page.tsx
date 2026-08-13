@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { getAppointments } from '@/src/app/actions/agenda'
 import { getAllLeadsData } from '@/src/app/actions/kanban'
 import CalendarAgenda from '@/src/components/CalendarAgenda'
+import type { Appointment, Lead } from '@/src/types/crm'
 
 export default async function AgendaPage() {
   const supabase = await createClient()
@@ -25,8 +26,7 @@ export default async function AgendaPage() {
         <p className="text-sm text-gray-500 mt-1">Gerencie suas reuniões, ligações e visitas visualmente.</p>
       </div>
 
-      {/* Renderiza o componente de Calendário interativo passando os dados com as any para evitar erro de tipagem */}
-      <CalendarAgenda appointments={appointments as any} leads={(leads || []) as any} />
+      <CalendarAgenda appointments={appointments as Appointment[]} leads={(leads || []) as Lead[]} />
     </div>
   )
 }

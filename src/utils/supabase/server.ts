@@ -17,8 +17,8 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options)
             })
-          } catch (error) {
-            // O catch é necessário caso o método seja chamado em um Server Component
+          } catch {
+            // O método pode ser chamado num Server Component onde os cookies são somente leitura.
           }
         },
       },

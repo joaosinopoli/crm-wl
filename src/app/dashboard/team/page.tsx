@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { getTeamMembers, createEmployee } from '@/src/app/actions/team'
 import Link from 'next/link'
 import EditEmployeeModal from '@/src/components/EditEmployeeModal'
+import type { Member } from '@/src/types/crm'
 
 export default async function TeamPage() {
   const supabase = await createClient()
@@ -116,7 +117,7 @@ export default async function TeamPage() {
               </thead>
               <tbody className="divide-y divide-gray-200 text-sm text-gray-700">
                 {members && members.length > 0 ? (
-                  members.map((member: any) => (
+                  members.map((member: Member) => (
                     <tr key={member.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="py-3 px-4 font-medium text-gray-900">{member.full_name}</td>
                       <td className="py-3 px-4">

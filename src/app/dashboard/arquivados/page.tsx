@@ -1,6 +1,7 @@
 import { getArchivedLeads } from '@/src/app/actions/kanban'
 import { createClient } from '@/src/utils/supabase/server'
 import EditArchivedLeadModal from '@/src/components/EditArchivedLeadModal'
+import type { CustomField, Lead, Member } from '@/src/types/crm'
 
 export default async function ArquivadosPage({
   searchParams,
@@ -10,8 +11,8 @@ export default async function ArquivadosPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   
-  let members: any[] = []
-  let customFields: any[] = []
+  let members: Member[] = []
+  let customFields: CustomField[] = []
   let userRole = 'sales'
 
   if (user) {
@@ -101,7 +102,7 @@ export default async function ArquivadosPage({
             </thead>
             <tbody className="divide-y divide-gray-200 text-sm text-gray-700">
               {archivedLeads && archivedLeads.length > 0 ? (
-                archivedLeads.map((lead: any) => {
+                archivedLeads.map((lead: Lead) => {
                   const profileData = Array.isArray(lead.profiles) ? lead.profiles[0] : lead.profiles
                   const isWon = lead.status === 'won'
 
@@ -123,7 +124,7 @@ export default async function ArquivadosPage({
                         )}
                       </td>
                       <td className="py-4 px-6 font-medium text-gray-900">
-                        {isWon && lead.lead_value > 0 ? formatCurrency(lead.lead_value) : '-'}
+                        {isWon && Number(lead.lead_value || 0) > 0 ? formatCurrency(Number(lead.lead_value || 0)) : '-'}
                       </td>
                       <td className="py-4 px-6 text-gray-500 text-xs font-medium">
                         {lead.closed_at ? new Date(lead.closed_at).toLocaleDateString('pt-BR', {

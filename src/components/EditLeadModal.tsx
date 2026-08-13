@@ -3,16 +3,9 @@
 import { useState } from 'react'
 import { updateLead } from '@/src/app/actions/kanban'
 import CurrencyInput from '@/src/components/CurrencyInput'
+import type { CustomField, FunnelStep, Lead, Member } from '@/src/types/crm'
 
-type Step = { id: string; title: string; color?: string; position?: number }
-type Member = { id: string; full_name: string; role: string }
-type CustomField = { id: string; field_key: string; field_label: string; field_type: string; position?: number }
-type Lead = {
-  id: string; name: string; email?: string | null; phone?: string | null; step_id: string;
-  assigned_to?: string | null; custom_data?: Record<string, any> | null; observation?: string | null;
-}
-
-export default function EditLeadModal({ lead, steps, members, userRole, customFields }: { lead: Lead, steps: Step[], members: Member[], userRole: string, customFields: CustomField[] }) {
+export default function EditLeadModal({ lead, steps, members, userRole, customFields }: { lead: Lead, steps: FunnelStep[], members: Member[], userRole: string, customFields: CustomField[] }) {
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
@@ -140,7 +133,7 @@ export default function EditLeadModal({ lead, steps, members, userRole, customFi
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Etapa do Funil</label>
                 <select 
-                  name="stepId" defaultValue={lead.step_id}
+                  name="stepId" defaultValue={lead.step_id || ''}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {steps.map((step) => (

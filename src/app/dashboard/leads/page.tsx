@@ -1,5 +1,6 @@
 import { getAllLeadsData } from '@/src/app/actions/kanban'
 import EditLeadModal from '@/src/components/EditLeadModal'
+import type { Lead } from '@/src/types/crm'
 
 export default async function LeadsPage({
   searchParams,
@@ -121,7 +122,7 @@ export default async function LeadsPage({
             </thead>
             <tbody className="divide-y divide-gray-200 text-sm text-gray-700">
               {filteredLeads.length > 0 ? (
-                filteredLeads.map((lead: any) => {
+                filteredLeads.map((lead: Lead) => {
                   const profileData = Array.isArray(lead.profiles) ? lead.profiles[0] : lead.profiles
                   const step = steps.find(s => s.id === lead.step_id)
 

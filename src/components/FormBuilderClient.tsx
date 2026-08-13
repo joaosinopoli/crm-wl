@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
+import type { DropResult } from '@hello-pangea/dnd'
 import { createCustomField, deleteCustomField, updateCustomFieldsOrder } from '@/src/app/actions/kanban'
-
-type CustomField = { id: string; field_key: string; field_label: string; field_type: string; position: number }
+import type { CustomField } from '@/src/types/crm'
 
 export default function FormBuilderClient({ initialFields }: { initialFields: CustomField[] }) {
   const [fields, setFields] = useState<CustomField[]>(initialFields)
   const [loading, setLoading] = useState(false)
 
-  const onDragEnd = async (result: any) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return
 
     const items = Array.from(fields)

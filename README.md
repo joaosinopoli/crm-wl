@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CRM White Label
 
-## Getting Started
+CRM multi-tenant para equipas comerciais, construído com Next.js, TypeScript, Supabase e Tailwind CSS. O produto inclui autenticação, onboarding de empresa, funil Kanban, leads, histórico de vendas, agenda, campos personalizados, equipa e tarefas de follow-up.
 
-First, run the development server:
+## Estado atual
+
+A aplicação compila para produção e o lint passa sem erros. A implementação mais recente acrescenta uma fundação de autorização para as mutações críticas e o módulo de **Tarefas e Follow-ups**, que permite criar atividades ligadas a leads, atribuí-las a membros da empresa, definir prioridade e concluir tarefas.
+
+> A aplicação depende de um projeto Supabase configurado. Antes de publicar o módulo de tarefas, aplique a migration existente em `supabase/migrations/20260813170000_create_tasks.sql`.
+
+## Requisitos
+
+É necessário Node.js 20 ou superior, npm e um projeto Supabase. O fluxo de gestão de equipa também requer a Service Role Key exclusivamente no servidor.
+
+## Configuração local
+
+Copie `.env.example` para `.env.local` e preencha as variáveis do projeto Supabase. Nunca exponha `SUPABASE_SERVICE_ROLE_KEY` no browser, num commit ou em variáveis `NEXT_PUBLIC_*`.
 
 ```bash
+npm ci
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicação fica disponível em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variáveis de ambiente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variável | Utilização | Exposição |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase | Pública no bundle |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave anon para SSR/browser | Pública no bundle |
+| `SUPABASE_SERVICE_ROLE_KEY` | Gestão de utilizadores no servidor | **Apenas servidor** |
+| `NEXT_PUBLIC_SITE_URL` | URL base usada em OAuth e produção | Pública |
 
-## Learn More
+## Banco de dados
 
-To learn more about Next.js, take a look at the following resources:
+As tabelas base esperadas pelo código atual são `companies`, `profiles`, `funnel_steps`, `leads`, `appointments` e `custom_field_definitions`, além das RPCs de provisionamento já utilizadas pelo onboarding. O schema base ainda precisa de ser versionado no repositório para que um ambiente novo seja reproduzível.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O módulo de tarefas adiciona a tabela `tasks`, índices por empresa/responsável/prazo, atualização automática de `updated_at` e políticas RLS. Aplique a migration no SQL Editor do Supabase ou através do fluxo de migrations adotado pela equipa.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Comando | Objetivo |
+| --- | --- |
+| `npm run dev` | Iniciar o servidor de desenvolvimento |
+| `npm run lint` | Executar ESLint |
+| `npm run build` | Gerar o build de produção |
+| `npm run start` | Servir o build de produção |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estrutura principal
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`src/app` contém as rotas e server actions. `src/components` contém a interface interativa. `src/utils/supabase` centraliza os clientes Supabase SSR/browser. `src/utils/auth.ts` expõe o contexto autenticado e o perfil do tenant. `src/types/crm.ts` concentra os contratos partilhados da aplicação. `supabase/migrations` guarda migrations novas do produto.
+
+## Segurança e autorização
+
+As operações de escrita devem validar sessão, papel e `company_id` no servidor. Os vendedores ficam limitados aos leads e tarefas atribuídos a si; administradores podem gerir os dados da sua empresa. Esta camada de aplicação complementa, mas não substitui, políticas RLS corretamente configuradas no Supabase.
+
+## Próximas evoluções recomendadas
+
+A próxima etapa deve versionar o schema base e adicionar testes automatizados para autorização cross-tenant. Depois disso, o produto pode evoluir com timeline de atividades, etiquetas, pesquisa global, importação/exportação, relatórios por período, branding por tenant, webhooks e integrações com e-mail/WhatsApp oficial.

@@ -1,6 +1,7 @@
 import { createClient } from '@/src/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { createFunnelStep, updateFunnelStep, reorderFunnelStep, createCustomField, deleteCustomField } from '@/src/app/actions/kanban'
+import { createFunnelStep, updateFunnelStep, reorderFunnelStep, createCustomField } from '@/src/app/actions/kanban'
+import type { FunnelStep } from '@/src/types/crm'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -29,10 +30,6 @@ export default async function SettingsPage() {
     .select('*')
     .order('position', { ascending: true })
 
-  const { data: customFields } = await supabase
-    .from('custom_field_definitions')
-    .select('*')
-    .eq('company_id', profile.company_id)
 
   return (
     <div className="h-full flex flex-col max-w-4xl mx-auto w-full pb-12">
@@ -93,7 +90,7 @@ export default async function SettingsPage() {
           <p className="text-sm text-gray-500 mb-6">Altere a ordem de exibição das abas, edite títulos ou adicione novas colunas.</p>
 
           <div className="space-y-4 mb-8">
-            {steps?.map((step: any, index: number) => (
+            {steps?.map((step: FunnelStep, index: number) => (
               <div 
                 key={step.id} 
                 className="flex flex-col sm:flex-row items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200"

@@ -2,21 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createAppointment } from '@/src/app/actions/agenda'
-
-type Appointment = {
-  id: string
-  title: string
-  appointment_date: string
-  appointment_time: string
-  lead_id?: string
-  leads?: { name: string }
-  profiles?: { full_name: string } | { full_name: string }[]
-}
-
-type Lead = {
-  id: string
-  name: string
-}
+import type { Appointment, Lead } from '@/src/types/crm'
 
 export default function CalendarAgenda({ appointments, leads }: { appointments: Appointment[], leads: Lead[] }) {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -27,8 +13,11 @@ export default function CalendarAgenda({ appointments, leads }: { appointments: 
 
   // FORÇA O CALENDÁRIO A USAR O RELÓGIO DO NAVEGADOR DO USUÁRIO (Ignora o UTC da Vercel)
   useEffect(() => {
-    setIsMounted(true)
-    setCurrentDate(new Date()) 
+    const frame = window.requestAnimationFrame(() => {
+      setIsMounted(true)
+      setCurrentDate(new Date())
+    })
+    return () => window.cancelAnimationFrame(frame)
   }, [])
 
   const year = currentDate.getFullYear()
@@ -183,7 +172,10 @@ export default function CalendarAgenda({ appointments, leads }: { appointments: 
                     <div className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold shrink-0 shadow-sm">{appt.appointment_time.slice(0, 5)}</div>
                     <div>
                       <h4 className="font-bold text-gray-900 leading-tight">{appt.title}</h4>
-                      {appt.leads?.name && <p className="text-sm text-gray-600 mt-1">👤 Cliente: <strong className="text-gray-800">{appt.leads.name}</strong></p>}
+                      {(() => {
+                        const lead = Array.isArray(appt.leads) ? appt.leads[0] : appt.leads
+                        return lead?.name ? <p className="text-sm text-gray-600 mt-1">Cliente: <strong className="text-gray-800">{lead.name}</strong></p> : null
+                      })()}
                       <p className="text-[11px] text-gray-400 mt-2 font-medium">Resp: {Array.isArray(appt.profiles) ? appt.profiles[0]?.full_name : appt.profiles?.full_name || 'Desconhecido'}</p>
                     </div>
                   </div>

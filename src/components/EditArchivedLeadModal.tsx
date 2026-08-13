@@ -3,13 +3,7 @@
 import { useState } from 'react'
 import { updateArchivedLead } from '@/src/app/actions/kanban'
 import CurrencyInput from '@/src/components/CurrencyInput'
-
-type Member = { id: string; full_name: string; role: string }
-type CustomField = { id: string; field_key: string; field_label: string; field_type: string; position?: number }
-type Lead = {
-  id: string; name: string; email?: string | null; phone?: string | null; status: string;
-  assigned_to?: string | null; custom_data?: Record<string, any> | null; observation?: string | null; lead_value?: number | null;
-}
+import type { CustomField, Lead, Member } from '@/src/types/crm'
 
 export default function EditArchivedLeadModal({ lead, members, userRole, customFields }: { lead: Lead, members: Member[], userRole: string, customFields: CustomField[] }) {
   const [isOpen, setIsOpen] = useState(false)
