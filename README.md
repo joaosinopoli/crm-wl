@@ -59,3 +59,7 @@ As operações de escrita devem validar sessão, papel e `company_id` no servido
 ## Próximas evoluções recomendadas
 
 A próxima etapa deve versionar o schema base e adicionar testes automatizados para autorização cross-tenant. Depois disso, o produto pode evoluir com timeline de atividades, etiquetas, pesquisa global, importação/exportação, relatórios por período, branding por tenant, webhooks e integrações com e-mail/WhatsApp oficial.
+
+## Website do relatório de entrega
+
+Foi acrescentado o website partilhável do relatório em `report-site/`. Para executá-lo localmente, consulte [`report-site/README.md`](./report-site/README.md). A versão visual está disponível no preview do projeto Manus e a branch de código correspondente é `feature/report-site`.
