@@ -33,6 +33,9 @@ export default async function DashboardLayout({
   const userName = profile?.full_name || user.email || 'Usuário'
   const userRole = profile?.role || 'sales'
 
+  // Padronização do estilo dos links para manter o hover certinho
+  const navLinkStyle = "flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors"
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
@@ -41,31 +44,35 @@ export default async function DashboardLayout({
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-          <Link href="/dashboard" className="flex items-center px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-            📊 Resumo Financeiro
+          <Link href="/dashboard" className={navLinkStyle}>
+            <span className="text-lg">📊</span> Visão Geral
           </Link>
-          <Link href="/dashboard/kanban" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-            Funil de Vendas (Kanban)
+          <Link href="/dashboard/kanban" className={navLinkStyle}>
+            <span className="text-lg">🎯</span> Negociações
           </Link>
-          <Link href="/dashboard/agenda" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-            Agenda
+          <Link href="/dashboard/agenda" className={navLinkStyle}>
+            <span className="text-lg">📅</span> Agenda
           </Link>
-          <Link href="/dashboard/leads" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-            Todos os Leads (Abertos)
+          <Link href="/dashboard/leads" className={navLinkStyle}>
+            <span className="text-lg">👥</span> Clientes Ativos
           </Link>
-          <Link href="/dashboard/arquivados" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-            🗃️ Arquivados (Histórico)
+          <Link href="/dashboard/arquivados" className={navLinkStyle}>
+            <span className="text-lg">🗃️</span> Histórico de Vendas
           </Link>
+          
           {profile?.role === 'admin' && (
             <>
-              <Link href="/dashboard/team" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Equipe
+              <div className="pt-6 pb-2">
+                <span className="px-4 text-[10px] font-black text-gray-400 uppercase tracking-wider">Gestão e Ajustes</span>
+              </div>
+              <Link href="/dashboard/team" className={navLinkStyle}>
+                <span className="text-lg">🧑‍💻</span> Equipe
               </Link>
-              <Link href="/dashboard/form-builder" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Formulário do Lead
+              <Link href="/dashboard/form-builder" className={navLinkStyle}>
+                <span className="text-lg">📝</span> Personalizar Campos
               </Link>
-              <Link href="/dashboard/settings" className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Configurações
+              <Link href="/dashboard/settings" className={navLinkStyle}>
+                <span className="text-lg">⚙️</span> Configurações
               </Link>
             </>
           )}
@@ -78,11 +85,15 @@ export default async function DashboardLayout({
             </div>
             <div className="flex flex-col overflow-hidden">
               <span className="text-sm font-medium text-gray-900 truncate">{userName}</span>
-              <span className="text-xs text-gray-500 truncate capitalize">{userRole}</span>
+              <span className="text-xs text-gray-500 truncate capitalize">
+                {userRole === 'admin' ? 'Administrador' : 'Vendedor'}
+              </span>
             </div>
           </div>
           <form action={logout} className="mt-2">
-            <button type="submit" className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium">Sair do sistema</button>
+            <button type="submit" className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium flex items-center gap-3">
+              <span className="text-lg">🚪</span> Sair do sistema
+            </button>
           </form>
         </div>
       </aside>

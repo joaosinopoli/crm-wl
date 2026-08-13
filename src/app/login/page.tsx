@@ -1,98 +1,71 @@
-import { login } from '@/src/app/actions/auth'
 import Link from 'next/link'
+import { login } from '@/src/app/actions/auth'
+import GoogleLoginButton from '@/src/components/GoogleLoginButton'
 
-export default async function LoginPage(props: {
-  searchParams: Promise<{ message?: string }>
-}) {
-  const searchParams = await props.searchParams
-  const message = searchParams?.message
-
+export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
-      
-      {/* Rota de Fuga: Voltar para Landing Page */}
-      <div className="absolute top-8 left-8">
-        <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 flex items-center gap-2 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Voltar para o site
-        </Link>
-      </div>
-
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-md border border-gray-100">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Acesse sua conta
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            CRM White Label
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-4 font-sans selection:bg-blue-600 selection:text-white">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
         
-        <form className="mt-8 space-y-6" action={login}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                E-mail
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1"
-                placeholder="vendedor@suaempresa.com.br"
-              />
-            </div>
-            <div>
-              <div className="flex justify-between items-center mt-1">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Senha
-                </label>
-                {/* Rota de Fuga: Esqueci a senha */}
-                <Link href="/forgot-password" className="text-xs font-medium text-blue-600 hover:text-blue-500">
-                  Esqueceu a senha?
-                </Link>
-              </div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1"
-                placeholder="••••••••"
-              />
-            </div>
-          </div>
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-black text-gray-900 mb-2">Bem-vindo de volta!</h1>
+          <p className="text-sm text-gray-500 font-medium">Acesse sua conta para continuar gerenciando suas vendas.</p>
+        </div>
 
-          {message && (
-            <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded">
-              {message}
+        {/* Botão do Google no topo */}
+        <GoogleLoginButton />
+
+        {/* Divisor Visual */}
+        <div className="flex items-center gap-4 my-6">
+          <div className="flex-1 h-px bg-gray-200"></div>
+          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ou</span>
+          <div className="flex-1 h-px bg-gray-200"></div>
+        </div>
+
+        {/* Formulário Tradicional */}
+        <form action={login} className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
+            <input 
+              name="email" 
+              type="email" 
+              required 
+              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
+              placeholder="seu@email.com" 
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Senha</label>
+            <input 
+              name="password" 
+              type="password" 
+              required 
+              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
+              placeholder="••••••••" 
+            />
+          </div>
+          
+          {searchParams?.error && (
+            <div className="text-red-500 text-xs font-medium bg-red-50 p-3 rounded-xl border border-red-100">
+              {searchParams.error}
             </div>
           )}
-
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-            >
-              Entrar
-            </button>
-          </div>
+          
+          <button 
+            type="submit" 
+            className="w-full bg-gray-900 text-white py-3.5 rounded-xl text-sm font-bold hover:bg-black transition-colors shadow-sm mt-2"
+          >
+            Entrar com E-mail
+          </button>
         </form>
 
-        {/* Rota de Fuga: Criar nova conta */}
-        <div className="text-center mt-6 pt-6 border-t border-gray-100">
-          <p className="text-sm text-gray-600">
-            Ainda não tem uma conta?{' '}
-            <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              Teste grátis agora
-            </Link>
-          </p>
-        </div>
+        <p className="text-center text-sm text-gray-600 font-medium mt-8">
+          Ainda não tem conta?{' '}
+          <Link href="/signup" className="text-blue-600 font-bold hover:underline decoration-2 underline-offset-4">
+            Criar conta grátis
+          </Link>
+        </p>
       </div>
     </div>
   )
