@@ -22,7 +22,15 @@ export async function getTeamMembers() {
     .select('id, full_name, role, company_id')
     .eq('company_id', profile.company_id)
 
-  return members || []
+  const { data: memberships } = await supabase
+    .from('workspace_memberships')
+    .select('user_id, role, is_active')
+    .eq('company_id', profile.company_id)
+
+  return (members || []).map((member) => ({
+    ...member,
+    workspace_role: memberships?.find((membership) => membership.user_id === member.id)?.role || (member.role === 'admin' ? 'admin' : 'sales'),
+  }))
 }
 
 export async function createEmployee(formData: FormData) {
@@ -49,7 +57,7 @@ export async function createEmployee(formData: FormData) {
   if (!fullName || !email || !password) {
     return { success: false, error: 'Preencha todos os campos obrigatórios.' }
   }
-  if (role !== 'admin' && role !== 'sales') {
+  if (!['admin', 'manager', 'sales', 'viewer'].includes(role)) {
     return { success: false, error: 'Função inválida.' }
   }
 
@@ -82,13 +90,20 @@ export async function createEmployee(formData: FormData) {
       id: authData.user.id,
       company_id: adminProfile.company_id,
       full_name: fullName,
-      role: role
+      role: role === 'admin' ? 'admin' : 'sales'
     })
 
   if (profileError) {
     console.error('Erro ao criar perfil:', profileError.message)
     return { success: false, error: 'Erro ao associar o funcionário à empresa.' }
   }
+
+  await supabaseAdmin.from('workspace_memberships').upsert({
+    company_id: adminProfile.company_id,
+    user_id: authData.user.id,
+    role,
+    is_active: true,
+  }, { onConflict: 'company_id,user_id' })
 
   revalidatePath('/dashboard/team')
   return { success: true }
@@ -118,7 +133,7 @@ export async function updateEmployee(formData: FormData) {
   if (!employeeId || !fullName || !role) {
     return { success: false, error: 'ID, Nome e Função são obrigatórios.' }
   }
-  if (role !== 'admin' && role !== 'sales') {
+  if (!['admin', 'manager', 'sales', 'viewer'].includes(role)) {
     return { success: false, error: 'Função inválida.' }
   }
   if (employeeId === user.id && role !== 'admin') {
@@ -147,13 +162,20 @@ export async function updateEmployee(formData: FormData) {
   // 1. Atualiza nome e role na tabela profiles
   const { error: profileError } = await supabaseAdmin
     .from('profiles')
-    .update({ full_name: fullName, role })
+    .update({ full_name: fullName, role: role === 'admin' ? 'admin' : 'sales' })
     .eq('id', employeeId)
     .eq('company_id', adminProfile.company_id)
 
   if (profileError) {
     return { success: false, error: 'Erro ao atualizar dados do perfil.' }
   }
+
+  await supabaseAdmin.from('workspace_memberships').upsert({
+    company_id: adminProfile.company_id,
+    user_id: employeeId,
+    role,
+    is_active: true,
+  }, { onConflict: 'company_id,user_id' })
 
   // 2. Se foi informada uma nova senha, atualiza no Auth do Supabase
   if (newPassword && newPassword.trim().length > 0) {

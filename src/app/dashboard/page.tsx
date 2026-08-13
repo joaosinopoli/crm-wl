@@ -1,22 +1,24 @@
 import { getDashboardMetrics } from '@/src/app/actions/metrics'
 import Link from 'next/link'
+import { getWorkspaceSettings } from '@/src/app/actions/workspace'
 
 export default async function DashboardPage() {
   const metrics = await getDashboardMetrics()
+  const workspace = await getWorkspaceSettings()
 
   if (!metrics) {
     return <div className="p-8 text-gray-500">Erro ao carregar métricas.</div>
   }
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
+    return new Intl.NumberFormat(workspace?.locale || 'pt-BR', { style: 'currency', currency: workspace?.currency || 'BRL' }).format(value)
   }
 
   return (
     <div className="h-full flex flex-col max-w-6xl mx-auto w-full">
       <div className="mb-8">
         <h2 className="text-3xl font-black text-gray-900">Resumo Financeiro e Desempenho</h2>
-        <p className="text-sm text-gray-500 mt-1">Acompanhe suas vendas fechadas e o valor projetado no funil.</p>
+        <p className="text-sm text-gray-500 mt-1">Acompanhe o desempenho de {workspace?.portal_name || 'seu workspace'} e o valor projetado no {workspace?.pipeline_label?.toLowerCase() || 'funil'}.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -32,7 +34,7 @@ export default async function DashboardPage() {
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Pipeline (Em Aberto)</p>
           <h3 className="text-3xl font-black text-gray-900">{formatCurrency(metrics.totalPipeline)}</h3>
           <p className="text-xs font-medium text-blue-600 mt-2 bg-blue-50 w-fit px-2 py-1 rounded">
-            {metrics.openCount} leads ativos
+            {metrics.openCount} {workspace?.lead_label_plural?.toLowerCase() || 'leads'} ativos
           </p>
         </div>
 

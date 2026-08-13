@@ -1,6 +1,7 @@
 import { createClient } from '@/src/utils/supabase/server'
+import type { WorkspaceRole } from '@/src/types/workspace'
 
-export type UserRole = 'admin' | 'sales'
+export type UserRole = WorkspaceRole
 
 export type UserProfile = {
   id: string
@@ -23,25 +24,39 @@ export async function getAuthContext() {
     .eq('id', user.id)
     .maybeSingle()
 
-  if (!profile?.company_id || (profile.role !== 'admin' && profile.role !== 'sales')) {
+  if (!profile?.company_id) {
     return { supabase, user, profile: null }
   }
+
+  const { data: membership } = await supabase
+    .from('workspace_memberships')
+    .select('role, is_active')
+    .eq('company_id', profile.company_id)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  const role = (membership?.is_active ? membership.role : profile.role) as UserRole
+  if (!['owner', 'admin', 'manager', 'sales', 'viewer'].includes(role)) return { supabase, user, profile: null }
 
   return {
     supabase,
     user,
     profile: {
       ...profile,
-      role: profile.role as UserRole,
+      role,
       company_id: profile.company_id,
     } satisfies UserProfile,
   }
 }
 
 export function isAdmin(role: UserRole) {
-  return role === 'admin'
+  return role === 'owner' || role === 'admin'
 }
 
 export function isSales(role: UserRole) {
   return role === 'sales'
+}
+
+export function isReadOnly(role: UserRole) {
+  return role === 'viewer'
 }

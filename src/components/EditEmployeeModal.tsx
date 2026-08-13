@@ -7,6 +7,7 @@ type Member = {
   id: string
   full_name: string
   role: string
+  workspace_role?: string
 }
 
 export default function EditEmployeeModal({ member }: { member: Member }) {
@@ -72,11 +73,13 @@ export default function EditEmployeeModal({ member }: { member: Member }) {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Função / Permissão</label>
                 <select 
                   name="role" 
-                  defaultValue={member.role}
+                  defaultValue={member.workspace_role || member.role}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="sales">Vendedor (Vê apenas seus leads)</option>
-                  <option value="admin">Administrador (Vê tudo)</option>
+                  <option value="sales">Vendedor (gere os próprios negócios)</option>
+                  <option value="manager">Gestor (acompanha a equipa)</option>
+                  <option value="viewer">Visualizador (apenas leitura)</option>
+                  <option value="admin">Administrador (gere o workspace)</option>
                 </select>
               </div>
 

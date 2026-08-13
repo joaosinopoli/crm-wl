@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { getAuthContext, isSales } from '@/src/utils/auth'
+import { getAuthContext, isReadOnly, isSales } from '@/src/utils/auth'
 import type { TaskFormResult, TaskPriority, TaskStatus } from '@/src/types/crm'
 
 const allowedPriorities = new Set<TaskPriority>(['low', 'medium', 'high'])
@@ -40,6 +40,7 @@ export async function getTasks(status: TaskStatus | 'all' = 'pending') {
 export async function createTask(formData: FormData): Promise<TaskFormResult> {
   const { supabase, user, profile } = await getAuthContext()
   if (!user || !profile) return { success: false, error: 'Não autorizado.' }
+  if (isReadOnly(profile.role)) return { success: false, error: 'O seu perfil tem acesso apenas de leitura.' }
 
   const title = String(formData.get('title') || '').trim()
   const description = String(formData.get('description') || '').trim()
@@ -93,6 +94,7 @@ export async function createTask(formData: FormData): Promise<TaskFormResult> {
 export async function updateTaskStatus(taskId: string, status: Exclude<TaskStatus, 'cancelled'>): Promise<TaskFormResult> {
   const { supabase, user, profile } = await getAuthContext()
   if (!user || !profile) return { success: false, error: 'Não autorizado.' }
+  if (isReadOnly(profile.role)) return { success: false, error: 'O seu perfil tem acesso apenas de leitura.' }
   if (status !== 'pending' && status !== 'completed') return { success: false, error: 'Estado inválido.' }
 
   let query = supabase

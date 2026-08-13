@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 import { getTeamMembers, createEmployee } from '@/src/app/actions/team'
 import Link from 'next/link'
 import EditEmployeeModal from '@/src/components/EditEmployeeModal'
-import type { Member } from '@/src/types/crm'
 
 export default async function TeamPage() {
   const supabase = await createClient()
@@ -88,8 +87,10 @@ export default async function TeamPage() {
                 name="role" 
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="sales">Vendedor (Vê apenas seus leads)</option>
-                <option value="admin">Administrador (Vê tudo e gerencia equipe)</option>
+                <option value="sales">Vendedor (gere os próprios negócios)</option>
+                <option value="manager">Gestor (acompanha a operação da equipa)</option>
+                <option value="viewer">Visualizador (acesso apenas de leitura)</option>
+                <option value="admin">Administrador (configura o workspace)</option>
               </select>
             </div>
 
@@ -117,14 +118,14 @@ export default async function TeamPage() {
               </thead>
               <tbody className="divide-y divide-gray-200 text-sm text-gray-700">
                 {members && members.length > 0 ? (
-                  members.map((member: Member) => (
+                  members.map((member) => (
                     <tr key={member.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="py-3 px-4 font-medium text-gray-900">{member.full_name}</td>
                       <td className="py-3 px-4">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          member.role === 'admin' ? 'bg-purple-50 text-purple-700 border border-purple-100' : 'bg-blue-50 text-blue-700 border border-blue-100'
+                          member.workspace_role === 'admin' ? 'bg-purple-50 text-purple-700 border border-purple-100' : member.workspace_role === 'manager' ? 'bg-amber-50 text-amber-700 border border-amber-100' : member.workspace_role === 'viewer' ? 'bg-gray-100 text-gray-700 border border-gray-200' : 'bg-blue-50 text-blue-700 border border-blue-100'
                         }`}>
-                          {member.role === 'admin' ? 'Administrador' : 'Vendedor'}
+                          {member.workspace_role === 'admin' ? 'Administrador' : member.workspace_role === 'manager' ? 'Gestor' : member.workspace_role === 'viewer' ? 'Visualizador' : 'Vendedor'}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right">

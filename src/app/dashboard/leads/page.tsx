@@ -44,9 +44,12 @@ export default async function LeadsPage({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Todos os Leads (Em Aberto)</h2>
-        <p className="text-sm text-gray-500 mt-1">Gerencie sua base de contatos ativos e filtre por interesses específicos.</p>
+      <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Todos os Leads (Em Aberto)</h2>
+          <p className="text-sm text-gray-500 mt-1">Gerencie sua base de contatos ativos e filtre por interesses específicos.</p>
+        </div>
+        <a href="/dashboard/leads/export" className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">Exportar CSV</a>
       </div>
 
       {/* Barra de Filtros */}
@@ -195,4 +198,4 @@ export default async function LeadsPage({
       </div>
     </div>
   )
-} 
+}
