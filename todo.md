@@ -1,7 +1,7 @@
 # Evolução da navegação do CRM
 
-- [ ] Auditar a navbar atual, as rotas protegidas e os módulos já existentes.
-- [ ] Definir grupos de navegação por operação, gestão e configuração.
-- [ ] Acrescentar atalhos e abas prioritárias sem expor rotas a papéis não autorizados.
-- [ ] Validar estados ativos, responsividade, navegação por teclado e links sem destino.
-- [ ] Executar lint/build e publicar a alteração numa branch do GitHub.
+- [x] Auditar a navbar atual, as rotas protegidas e os módulos já existentes.
+- [x] Definir grupos de navegação por operação, inteligência e gestão.
+- [x] Acrescentar a aba Relatórios sem expor rotas administrativas a vendedores.
+- [x] Validar estados ativos, responsividade, navegação por teclado e build de produção.
+- [x] Executar lint/build e publicar a alteração numa branch do GitHub.
