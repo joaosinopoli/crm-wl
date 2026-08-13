@@ -1,1 +1,367 @@
+/* Fieldwork OS: papel mineral, graphite, Cobalt Signal e estados de operação com densidade editorial. */
 @import "tailwindcss";
+
+:root {
+  --paper: #f7f7f3;
+  --paper-deep: #ecece5;
+  --surface: #ffffff;
+  --ink: #15202b;
+  --ink-soft: #69737d;
+  --ink-faint: #a6adb1;
+  --line: #dedfd9;
+  --brand-primary: #3158d4;
+  --coral: #f4775c;
+  --moss: #4f8b70;
+  --lilac: #8f83d6;
+  --shadow-paper: 0 18px 50px rgba(21, 32, 43, .06), 0 2px 8px rgba(21, 32, 43, .035);
+  --ease-field: cubic-bezier(.23, 1, .32, 1);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+button, a, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand-primary) 34%, transparent); outline-offset: 3px; }
+
+.fieldwork-shell { display: flex; min-height: 100vh; background: var(--paper); }
+.fieldwork-rail { width: 292px; min-height: 100vh; flex-direction: column; flex-shrink: 0; border-right: 1px solid var(--line); background: rgba(255,255,255,.82); padding: 24px 16px 16px; }
+.fieldwork-brand { display: flex; align-items: center; gap: 11px; min-height: 52px; padding: 0 10px; }
+.fieldwork-mark { display: inline-flex; flex-direction: column; justify-content: center; gap: 3px; width: 33px; height: 33px; padding: 7px; border-radius: 9px; background: var(--mark-color, var(--brand-primary)); box-shadow: 0 6px 14px color-mix(in srgb, var(--mark-color, var(--brand-primary)) 22%, transparent); }
+.fieldwork-mark i { display: block; height: 3px; border-radius: 2px; background: white; }
+.fieldwork-mark i:nth-child(2) { width: 70%; }
+.fieldwork-mark i:nth-child(3) { width: 42%; }
+.fieldwork-kicker { margin: 3px 0 0; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .14em; line-height: 1.2; text-transform: uppercase; }
+.fieldwork-rail-status { display: flex; align-items: center; gap: 7px; margin: 23px 4px 8px; padding: 8px 10px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.fieldwork-live-dot, .fieldwork-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 3px color-mix(in srgb, var(--moss) 13%, transparent); }
+.fieldwork-nav { flex: 1; overflow-y: auto; padding: 4px 0; }
+.fieldwork-nav-group { margin-top: 10px; }
+.fieldwork-nav-group + .fieldwork-nav-group { margin-top: 23px; }
+.fieldwork-nav-label { display: flex; align-items: center; gap: 8px; padding: 0 11px 7px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.fieldwork-nav-label span { color: var(--brand-primary); }
+.fieldwork-nav-label i { height: 1px; flex: 1; background: var(--line); }
+.fieldwork-nav-item { position: relative; display: flex; align-items: center; gap: 9px; min-height: 52px; margin: 2px 0; padding: 7px 10px; border: 1px solid transparent; border-radius: 9px; color: var(--ink-soft); text-decoration: none; transition: transform .18s var(--ease-field), background .18s var(--ease-field), color .18s var(--ease-field), border-color .18s var(--ease-field); }
+.fieldwork-nav-item:hover { transform: translateX(3px); border-color: var(--line); background: var(--paper); color: var(--ink); }
+.fieldwork-nav-item.is-active { border-color: color-mix(in srgb, var(--nav-brand, var(--brand-primary)) 18%, var(--line)); background: color-mix(in srgb, var(--nav-brand, var(--brand-primary)) 7%, white); color: var(--nav-brand, var(--brand-primary)); box-shadow: 0 6px 18px rgba(21,32,43,.035); }
+.fieldwork-nav-item.is-active::before { position: absolute; left: -17px; width: 3px; height: 27px; border-radius: 0 3px 3px 0; background: var(--nav-brand, var(--brand-primary)); content: ""; }
+.fieldwork-nav-index { width: 17px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; }
+.fieldwork-nav-item.is-active .fieldwork-nav-index { color: var(--nav-brand, var(--brand-primary)); }
+.fieldwork-nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 29px; height: 29px; border-radius: 7px; background: var(--paper-deep); color: var(--ink-soft); }
+.fieldwork-nav-item.is-active .fieldwork-nav-icon { background: var(--nav-brand, var(--brand-primary)); color: white; }
+.fieldwork-signal { border-radius: 4px; background: color-mix(in srgb, var(--brand-primary) 11%, white); padding: 3px 5px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-dot-hot { background: var(--coral); box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral) 13%, transparent); }
+.fieldwork-rail-bottom { margin-top: 10px; }
+.fieldwork-next { display: flex; flex-direction: column; gap: 4px; margin: 0 4px 13px; padding: 13px; border-radius: 10px; background: var(--ink); color: white; }
+.fieldwork-next .fieldwork-kicker { color: #93a1aa; }
+.fieldwork-next strong { font-size: 12px; }
+.fieldwork-next span:last-child { color: #a8b3b8; font-size: 10px; line-height: 1.45; }
+.fieldwork-topbar { display: flex; min-height: 88px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); background: rgba(247,247,243,.82); padding: 15px clamp(18px, 4vw, 56px); backdrop-filter: blur(18px); }
+.fieldwork-breadcrumb { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.fieldwork-breadcrumb b { color: var(--line); }
+.fieldwork-breadcrumb strong { max-width: 190px; overflow: hidden; color: var(--brand-primary); text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-topbar-actions { display: flex; align-items: center; gap: 9px; }
+.fieldwork-search-link { display: flex; align-items: center; gap: 8px; min-width: 195px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.74); color: var(--ink-soft); font-size: 11px; font-weight: 700; text-decoration: none; }
+.fieldwork-search-link kbd { margin-left: auto; padding: 2px 4px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; }
+.fieldwork-icon-button { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 37px; height: 37px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink-soft); }
+.fieldwork-icon-button i { position: absolute; top: 8px; right: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
+.fieldwork-main { flex: 1; overflow: auto; padding: clamp(20px, 3.5vw, 54px) clamp(18px, 4vw, 56px) 70px; background: radial-gradient(circle at 90% 0%, rgba(49,88,212,.04), transparent 32%), var(--paper); }
+.fieldwork-mobile-trigger { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); }
+.fieldwork-mobile-sheet { position: absolute; top: 50px; left: 0; z-index: 50; width: min(340px, calc(100vw - 36px)); max-height: calc(100vh - 80px); overflow: auto; padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 24px 60px rgba(21,32,43,.18); }
+.fieldwork-nav-group.is-compact { margin-top: 17px; }
+.fieldwork-nav-group.is-compact .fieldwork-nav-item { min-height: 46px; }
+.fieldwork-nav-item.is-compact .fieldwork-nav-index { display: none; }
+
+.fieldwork-page-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 30px; }
+.fieldwork-page-kicker { margin: 0 0 7px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+.fieldwork-page-title { margin: 0; color: var(--ink); font-family: Georgia, Cambria, serif; font-size: clamp(30px, 4.2vw, 54px); font-weight: 700; letter-spacing: -.055em; line-height: .98; }
+.fieldwork-page-copy { max-width: 620px; margin: 11px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.7; }
+.fieldwork-panel { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-paper); }
+.fieldwork-metric { position: relative; overflow: hidden; padding: 20px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); box-shadow: var(--shadow-paper); }
+.fieldwork-metric::before { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--metric-color, var(--brand-primary)); content: ""; }
+.fieldwork-metric-label { color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+.fieldwork-metric-value { margin-top: 12px; color: var(--ink); font-family: Georgia, Cambria, serif; font-size: 31px; font-weight: 700; letter-spacing: -.06em; }
+.fieldwork-metric-note { margin-top: 9px; color: var(--ink-soft); font-size: 11px; font-weight: 600; }
+.fieldwork-section-label { display: flex; align-items: center; gap: 10px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.fieldwork-section-label::after { height: 1px; flex: 1; background: var(--line); content: ""; }
+.fieldwork-page-stamp { display: flex; min-width: 152px; flex-direction: column; gap: 5px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.62); }
+.fieldwork-page-stamp span { color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .14em; }
+.fieldwork-page-stamp strong { color: var(--moss); font-size: 13px; }
+.fieldwork-page-stamp small { color: var(--ink-soft); font-size: 10px; }
+.fieldwork-inbox-grid { display: grid; min-height: 650px; grid-template-columns: minmax(290px, .8fr) minmax(0, 1.6fr); gap: 14px; }
+.fieldwork-inbox-list, .fieldwork-conversation { min-height: 650px; overflow: hidden; }
+.fieldwork-inbox-list-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 23px 22px 17px; border-bottom: 1px solid var(--line); }
+.fieldwork-inbox-list-head .fieldwork-page-kicker { margin-bottom: 5px; font-size: 9px; }
+.fieldwork-count-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 25px; height: 25px; border-radius: 7px; background: var(--brand-primary); color: white; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; }
+.fieldwork-inbox-filter { display: flex; gap: 4px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.fieldwork-inbox-filter span { padding: 6px 8px; border-radius: 6px; color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-inbox-filter span:first-child { background: var(--paper-deep); color: var(--ink); }
+.fieldwork-thread-list { max-height: 530px; overflow-y: auto; }
+.fieldwork-thread { display: flex; width: 100%; align-items: center; gap: 10px; padding: 14px 16px; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent); background: transparent; text-align: left; transition: background .18s var(--ease-field); }
+.fieldwork-thread:hover, .fieldwork-thread.is-selected { background: color-mix(in srgb, var(--brand-primary) 6%, white); }
+.fieldwork-thread.is-selected { box-shadow: inset 3px 0 0 var(--brand-primary); }
+.fieldwork-thread-avatar { display: inline-flex; width: 34px; height: 34px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9px; background: var(--paper-deep); color: var(--ink-soft); font-family: Georgia, Cambria, serif; font-size: 16px; font-weight: 700; }
+.fieldwork-thread-avatar.is-large { width: 44px; height: 44px; background: color-mix(in srgb, var(--brand-primary) 12%, white); color: var(--brand-primary); font-size: 20px; }
+.fieldwork-thread-time { align-self: flex-start; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.fieldwork-conversation { display: flex; flex-direction: column; }
+.fieldwork-conversation-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 23px 17px; border-bottom: 1px solid var(--line); }
+.fieldwork-conversation-head .fieldwork-kicker { margin: 0 0 5px; }
+.fieldwork-secondary-button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink-soft); font-size: 10px; font-weight: 800; }
+.fieldwork-secondary-button:hover { border-color: color-mix(in srgb, var(--brand-primary) 30%, var(--line)); color: var(--brand-primary); }
+.fieldwork-primary-button { display: inline-flex; align-items: center; gap: 7px; border-radius: 7px; background: var(--brand-primary); padding: 10px 13px; color: white; font-size: 11px; font-weight: 900; text-decoration: none; box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary) 20%, transparent); }
+.fieldwork-primary-button:hover { transform: translateY(-1px); filter: saturate(1.1); }
+.fieldwork-inline-link { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-primary); font-size: 11px; font-weight: 900; text-decoration: none; }
+.fieldwork-health-ring { display: flex; width: 156px; height: 156px; align-items: center; justify-content: center; border-radius: 50%; background: conic-gradient(var(--brand-primary) var(--ring-value), var(--paper-deep) 0); }
+.fieldwork-health-ring::before { position: absolute; width: 124px; height: 124px; border-radius: 50%; background: white; content: ""; }
+.fieldwork-health-ring > div { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.fieldwork-health-ring strong { color: var(--ink); font-family: Georgia, Cambria, serif; font-size: 30px; letter-spacing: -.08em; }
+.fieldwork-health-ring span { color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 800; line-height: 1.45; text-transform: uppercase; }
+.fieldwork-progress { height: 7px; overflow: hidden; border-radius: 5px; background: var(--paper-deep); }
+.fieldwork-progress i { display: block; height: 100%; border-radius: inherit; }
+.fieldwork-report-stamp { border: 1px solid var(--line); border-radius: 5px; padding: 5px 7px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+.fieldwork-report-bar { height: 10px; overflow: hidden; border-radius: 5px; background: var(--paper-deep); }
+.fieldwork-report-bar i { display: block; height: 100%; border-radius: inherit; }
+.fieldwork-action-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.13); color: #f7f7f3; font-size: 12px; font-weight: 700; text-decoration: none; }
+.fieldwork-action-row:hover { color: #8fa8ff; }
+.fieldwork-action-row b { display: inline-flex; width: 24px; color: #76838d; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.fieldwork-pipeline-wrap { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.42); box-shadow: var(--shadow-paper); }
+.fieldwork-pipeline-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: white; }
+.fieldwork-pipeline-tabs { display: flex; gap: 3px; overflow-x: auto; }
+.fieldwork-pipeline-tabs button { white-space: nowrap; border: 0; border-radius: 6px; background: transparent; padding: 8px 10px; color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-pipeline-tabs button:hover, .fieldwork-pipeline-tabs button.is-active { background: var(--paper); color: var(--ink); }
+.fieldwork-pipeline-tabs button.is-active { color: var(--brand-primary); }
+.fieldwork-pipeline-filter { display: flex; align-items: center; gap: 8px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .08em; white-space: nowrap; }
+.fieldwork-pipeline-filter select { min-width: 135px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); padding: 8px 9px; color: var(--ink); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 11px; font-weight: 700; outline: none; }
+.fieldwork-pipeline-scroll { display: flex; min-height: 650px; gap: 10px; overflow-x: auto; padding: 14px; background: linear-gradient(120deg, rgba(236,236,229,.75), rgba(247,247,243,.9)); }
+.fieldwork-pipeline-column { display: flex; width: 300px; min-width: 300px; max-height: 700px; flex-direction: column; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.52); }
+.fieldwork-pipeline-column-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 16px 15px 13px; border-bottom: 1px solid var(--line); }
+.fieldwork-pipeline-column-head h3 { margin: 3px 0 0; color: var(--ink); font-size: 13px; font-weight: 900; letter-spacing: -.02em; }
+.fieldwork-pipeline-column-head strong { display: block; color: var(--ink); font-family: Georgia, Cambria, serif; font-size: 20px; letter-spacing: -.06em; }
+.fieldwork-pipeline-column-head span:last-child { display: block; margin-top: 2px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; }
+.fieldwork-pipeline-column-index { color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; }
+.fieldwork-pipeline-dropzone { min-height: 140px; flex: 1; overflow-y: auto; padding: 10px; transition: background .18s var(--ease-field); }
+.fieldwork-pipeline-dropzone.is-over { background: color-mix(in srgb, var(--brand-primary) 7%, transparent); }
+.fieldwork-deal-card { margin-bottom: 9px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: white; box-shadow: 0 6px 16px rgba(21,32,43,.045); transition: transform .18s var(--ease-field), box-shadow .18s var(--ease-field), border-color .18s var(--ease-field); }
+.fieldwork-deal-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--brand-primary) 30%, var(--line)); box-shadow: 0 12px 22px rgba(21,32,43,.08); }
+.fieldwork-deal-card.is-dragging { transform: rotate(1deg) scale(1.02); border-color: var(--brand-primary); box-shadow: 0 22px 38px rgba(21,32,43,.16); }
+.fieldwork-deal-card-top, .fieldwork-deal-meta, .fieldwork-deal-footer { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
+.fieldwork-deal-source { color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.fieldwork-deal-more { border: 0; background: transparent; color: var(--ink-faint); }
+.fieldwork-deal-card h4 { margin: 11px 0 3px; color: var(--ink); font-size: 14px; font-weight: 900; letter-spacing: -.02em; }
+.fieldwork-deal-contact { display: block; overflow: hidden; color: var(--ink-soft); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-deal-value { display: flex; align-items: center; gap: 5px; margin-top: 13px; color: var(--moss); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 900; }
+.fieldwork-deal-value.is-muted { color: var(--ink-faint); font-size: 9px; font-weight: 700; }
+.fieldwork-deal-meta { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 10px; font-weight: 700; }
+.fieldwork-owner-avatar { display: inline-flex; width: 21px; height: 21px; align-items: center; justify-content: center; border-radius: 6px; background: color-mix(in srgb, var(--brand-primary) 13%, white); color: var(--brand-primary); font-size: 9px; font-weight: 900; }
+.fieldwork-deal-meta button { border: 0; background: transparent; color: var(--ink-faint); font-size: 10px; }
+.fieldwork-deal-note { display: flex; width: 100%; align-items: flex-start; gap: 6px; margin-top: 11px; border: 0; border-radius: 6px; background: var(--paper); padding: 8px; color: var(--ink-soft); text-align: left; font-size: 10px; line-height: 1.45; }
+.fieldwork-deal-note.is-open { color: var(--ink); }
+.fieldwork-deal-footer { margin-top: 12px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-column-empty { display: flex; min-height: 150px; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--ink-faint); text-align: center; font-size: 10px; line-height: 1.45; }
+.fieldwork-lead-hero { overflow: hidden; }
+.fieldwork-lead-hero-main { display: flex; align-items: center; gap: 20px; padding: 27px 30px; }
+.fieldwork-lead-avatar { display: flex; width: 68px; height: 68px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 14px; background: color-mix(in srgb, var(--brand-primary) 12%, white); color: var(--brand-primary); font-family: Georgia, Cambria, serif; font-size: 32px; font-weight: 700; }
+.fieldwork-lead-hero-actions { display: flex; align-items: center; gap: 9px; padding: 0 30px 22px; }
+.fieldwork-status-pill { border-radius: 5px; background: color-mix(in srgb, var(--moss) 12%, white); padding: 6px 8px; color: var(--moss); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.fieldwork-lead-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); background: var(--paper); }
+.fieldwork-lead-stats > div { min-height: 78px; padding: 16px 20px; border-right: 1px solid var(--line); }
+.fieldwork-lead-stats > div:last-child { border-right: 0; }
+.fieldwork-lead-stats span { display: block; margin-bottom: 7px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.fieldwork-lead-stats strong { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: 12px; }
+.fieldwork-timeline { position: relative; padding-left: 13px; }
+.fieldwork-timeline::before { position: absolute; top: 10px; bottom: 10px; left: 22px; width: 1px; background: var(--line); content: ""; }
+.fieldwork-timeline-item { position: relative; display: flex; gap: 16px; padding: 0 0 30px; }
+.fieldwork-timeline-icon { position: relative; z-index: 1; display: flex; width: 20px; height: 20px; flex-shrink: 0; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; background: white; color: var(--ink-soft); }
+.fieldwork-timeline-item.is-current .fieldwork-timeline-icon { border-color: var(--brand-primary); background: var(--brand-primary); color: white; }
+.fieldwork-timeline-item h3 { margin: 5px 0 4px; color: var(--ink); font-size: 13px; font-weight: 900; }
+.fieldwork-timeline-item p { margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.6; }
+.fieldwork-timeline-item small { display: block; margin-top: 8px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.fieldwork-empty-timeline { display: flex; min-height: 160px; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--ink-faint); text-align: center; }
+.fieldwork-empty-timeline p { max-width: 260px; margin: 0; font-size: 11px; line-height: 1.5; }
+.fieldwork-form-label { display: block; margin-bottom: 6px; color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.fieldwork-form-input { display: block; width: 100%; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); padding: 10px 11px; color: var(--ink); font-size: 12px; outline: none; }
+.fieldwork-form-input:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 11%, transparent); }
+.fieldwork-filter-bar { padding: 15px; }
+.fieldwork-leads-table { overflow: hidden; }
+.fieldwork-leads-table table { min-width: 960px; }
+.fieldwork-leads-table thead tr { background: var(--paper); border-bottom: 1px solid var(--line); color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.fieldwork-leads-table th { padding: 13px 18px; text-align: left; }
+.fieldwork-leads-table td { padding: 16px 18px; border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); font-size: 11px; }
+.fieldwork-lead-row { transition: background .18s var(--ease-field); }
+.fieldwork-lead-row:hover { background: color-mix(in srgb, var(--brand-primary) 4%, white); }
+.fieldwork-table-pill { display: inline-flex; border-radius: 5px; background: color-mix(in srgb, var(--brand-primary) 10%, white); padding: 5px 7px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; }
+.fieldwork-table-owner { display: inline-flex; border-radius: 5px; background: var(--paper); padding: 5px 7px; color: var(--ink-soft); font-size: 10px; font-weight: 800; }
+.fieldwork-empty-glyph { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px dashed var(--line); border-radius: 10px; color: var(--ink-faint); font-size: 20px; }
+.fieldwork-empty-leads { display: flex; min-height: 240px; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--ink-faint); text-align: center; }
+.fieldwork-empty-leads strong { color: var(--ink); font-size: 13px; }
+.fieldwork-empty-leads span { max-width: 270px; font-size: 11px; line-height: 1.5; }
+.fieldwork-automation-row { display: flex; align-items: center; gap: 12px; padding: 17px 22px; border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); }
+.fieldwork-automation-row:last-child { border-bottom: 0; }
+.fieldwork-automation-row:hover { background: color-mix(in srgb, var(--brand-primary) 4%, white); }
+.fieldwork-automation-icon { display: flex; width: 31px; height: 31px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 8px; background: color-mix(in srgb, var(--brand-primary) 10%, white); color: var(--brand-primary); }
+.fieldwork-automation-row h3 { color: var(--ink); font-size: 12px; font-weight: 900; }
+.fieldwork-automation-row p { margin-top: 5px; color: var(--ink-soft); font-size: 10px; line-height: 1.5; }
+.fieldwork-automation-row p b { color: var(--ink); font-weight: 900; }
+.fieldwork-automation-status { border-radius: 5px; background: var(--paper); padding: 5px 6px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; text-transform: uppercase; }
+.fieldwork-automation-status.is-active { background: color-mix(in srgb, var(--moss) 12%, white); color: var(--moss); }
+.fieldwork-automation-empty { display: flex; min-height: 250px; flex-direction: column; align-items: center; justify-content: center; gap: 9px; color: var(--ink-faint); text-align: center; }
+.fieldwork-automation-empty strong { color: var(--ink); font-size: 13px; }
+.fieldwork-automation-empty span { max-width: 240px; font-size: 11px; line-height: 1.5; }
+.fieldwork-task-group { overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: white; box-shadow: var(--shadow-paper); }
+.fieldwork-task-group > header { display: flex; align-items: center; justify-content: space-between; padding: 15px 18px; border-bottom: 1px solid var(--line); }
+.fieldwork-task-group > header > div { display: flex; align-items: center; gap: 8px; }
+.fieldwork-task-group > header h2 { color: var(--ink); font-size: 13px; font-weight: 900; letter-spacing: -.015em; }
+.fieldwork-task-group > header > span { display: inline-flex; min-width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 6px; background: var(--paper); color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; }
+.fieldwork-task-group-red > header { border-top: 3px solid var(--coral); }.fieldwork-task-group-red > header svg { color: var(--coral); }.fieldwork-task-group-blue > header { border-top: 3px solid var(--brand-primary); }.fieldwork-task-group-blue > header svg { color: var(--brand-primary); }.fieldwork-task-group-gray > header { border-top: 3px solid var(--ink-faint); }.fieldwork-task-group-gray > header svg { color: var(--ink-soft); }.fieldwork-task-group-green > header { border-top: 3px solid var(--moss); }.fieldwork-task-group-green > header svg { color: var(--moss); }
+.fieldwork-task-empty { padding: 24px 18px; color: var(--ink-soft); font-size: 12px; }
+.fieldwork-task-row { display: flex; align-items: center; gap: 11px; padding: 15px 18px; border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); }
+.fieldwork-task-row:last-child { border-bottom: 0; }
+.fieldwork-task-check { display: flex; width: 23px; height: 23px; flex-shrink: 0; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 7px; color: var(--moss); }
+.fieldwork-task-check span { width: 7px; height: 7px; border-radius: 50%; background: var(--brand-primary); }
+.fieldwork-task-row h3 { color: var(--ink); font-size: 12px; font-weight: 900; }
+.fieldwork-task-row h3.is-completed { color: var(--ink-faint); text-decoration: line-through; }
+.fieldwork-task-row p { margin-top: 5px; color: var(--ink-soft); font-size: 10px; }
+.fieldwork-task-row small { display: block; margin-top: 5px; overflow: hidden; color: var(--ink-faint); font-size: 10px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-task-lead { color: var(--brand-primary); font-weight: 800; text-decoration: none; }
+.fieldwork-task-priority { display: inline-flex; border-radius: 4px; padding: 3px 5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; text-transform: uppercase; }
+.fieldwork-task-priority-low { background: #eef1f2; color: var(--ink-soft); }.fieldwork-task-priority-medium { background: #fff4d8; color: #9a6d06; }.fieldwork-task-priority-high { background: #fee5df; color: #b9442e; }
+.fieldwork-task-complete { border: 1px solid color-mix(in srgb, var(--moss) 28%, var(--line)); border-radius: 6px; background: color-mix(in srgb, var(--moss) 9%, white); padding: 7px 9px; color: var(--moss); font-size: 10px; font-weight: 900; }
+.fieldwork-task-complete:hover { background: var(--moss); color: white; }
+.fieldwork-context-strip { display: flex; flex-wrap: wrap; gap: 9px 20px; padding: 10px 23px; background: var(--paper); color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.fieldwork-context-strip span { display: inline-flex; align-items: center; gap: 5px; }
+.fieldwork-message-list { display: flex; min-height: 0; flex: 1; flex-direction: column; gap: 13px; overflow-y: auto; padding: 24px; background: linear-gradient(180deg, rgba(247,247,243,.75), white); }
+.fieldwork-message { display: flex; max-width: min(72%, 520px); flex-direction: column; align-self: flex-start; gap: 5px; }
+.fieldwork-message div { padding: 12px 14px; border: 1px solid var(--line); border-radius: 4px 12px 12px 12px; background: white; color: var(--ink); font-size: 13px; line-height: 1.6; box-shadow: 0 5px 15px rgba(21,32,43,.035); }
+.fieldwork-message span { padding-left: 4px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.fieldwork-message.is-outgoing { align-self: flex-end; }
+.fieldwork-message.is-outgoing div { border-color: color-mix(in srgb, var(--brand-primary) 20%, var(--line)); border-radius: 12px 4px 12px 12px; background: color-mix(in srgb, var(--brand-primary) 8%, white); }
+.fieldwork-message.is-outgoing span { align-self: flex-end; padding-right: 4px; }
+.fieldwork-message-placeholder, .fieldwork-empty-inbox, .fieldwork-empty-conversation { display: flex; flex: 1; align-items: center; justify-content: center; gap: 10px; color: var(--ink-faint); text-align: center; }
+.fieldwork-message-placeholder { flex-direction: column; font-size: 12px; }
+.fieldwork-empty-inbox { min-height: 280px; flex-direction: column; padding: 28px; }
+.fieldwork-empty-inbox strong, .fieldwork-empty-conversation h2 { color: var(--ink); font-size: 14px; }
+.fieldwork-empty-inbox span, .fieldwork-empty-conversation p { max-width: 220px; color: var(--ink-soft); font-size: 11px; line-height: 1.55; }
+.fieldwork-empty-conversation { flex-direction: column; padding: 35px; }
+.fieldwork-composer { display: flex; align-items: flex-end; gap: 10px; padding: 14px 18px; border-top: 1px solid var(--line); background: white; }
+.fieldwork-composer textarea { min-height: 48px; flex: 1; resize: vertical; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); padding: 11px 12px; color: var(--ink); font-size: 12px; line-height: 1.5; outline: none; }
+.fieldwork-composer textarea:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 12%, transparent); }
+.fieldwork-composer button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 8px; background: var(--brand-primary); padding: 12px 14px; color: white; font-size: 11px; font-weight: 900; }
+.fieldwork-composer button:disabled { cursor: not-allowed; opacity: .45; }
+
+/* Fieldwork OS public surface: a public shell with editorial contrast, practical product proof and calm auth flows. */
+.fieldwork-public-shell { min-height: 100vh; overflow: hidden; background: var(--paper); color: var(--ink); }
+.fieldwork-public-header { display: flex; max-width: 1440px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 20px; padding: 24px clamp(20px, 5vw, 76px); }
+.fieldwork-wordmark { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 17px; font-weight: 950; letter-spacing: -.06em; }
+.fieldwork-wordmark-mark { display: inline-flex; width: 25px; height: 25px; align-items: center; justify-content: center; border-radius: 7px; background: var(--ink); color: var(--paper); font-family: Georgia, serif; font-size: 19px; font-style: italic; line-height: 1; }
+.fieldwork-public-nav-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 850; transition: color .18s var(--ease-field); }
+.fieldwork-public-nav-link:hover { color: var(--brand-primary); }
+.fieldwork-public-hero { display: grid; max-width: 1440px; min-height: 650px; margin: 0 auto; grid-template-columns: .92fr 1.08fr; align-items: center; gap: clamp(30px, 6vw, 100px); padding: 80px clamp(20px, 8vw, 120px) 110px; }
+.fieldwork-public-hero-copy h1 { max-width: 650px; margin: 18px 0 24px; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(56px, 7vw, 104px); font-weight: 500; letter-spacing: -.075em; line-height: .91; }
+.fieldwork-public-hero-copy h1 em, .fieldwork-public-section-head h2 em, .fieldwork-public-niches h2 em, .fieldwork-auth-aside h1 em { color: var(--brand-primary); font-style: italic; }
+.fieldwork-public-lede { max-width: 500px; color: var(--ink-soft); font-size: 17px; line-height: 1.65; }
+.fieldwork-public-actions { display: flex; max-width: 430px; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 30px; }
+.fieldwork-public-actions .google-login-button { flex: 1 1 220px; }
+.fieldwork-primary-button-large { min-height: 48px; padding: 0 17px; }
+.fieldwork-public-microcopy { display: flex; align-items: center; gap: 6px; margin-top: 17px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; }
+.fieldwork-public-visual { position: relative; min-height: 460px; transform: rotate(1deg); border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); background: #e8ece9; box-shadow: 18px 22px 0 color-mix(in srgb, var(--brand-primary) 16%, transparent); padding: 34px; }
+.fieldwork-public-visual::before { position: absolute; top: 0; right: 43px; width: 1px; height: 100%; background: color-mix(in srgb, var(--ink) 7%, transparent); content: ''; }
+.fieldwork-surface-note { position: relative; z-index: 1; display: flex; max-width: 430px; flex-direction: column; border-left: 3px solid var(--brand-primary); padding-left: 14px; }
+.fieldwork-surface-note span { color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .12em; }
+.fieldwork-surface-note strong { margin-top: 8px; color: var(--ink); font-size: clamp(26px, 4vw, 44px); font-weight: 950; letter-spacing: -.07em; }
+.fieldwork-surface-note small { margin-top: 8px; color: var(--ink-soft); font-size: 11px; }
+.fieldwork-mini-pipeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 38px; }
+.fieldwork-mini-column { display: flex; min-height: 210px; flex-direction: column; gap: 9px; border-top: 2px solid var(--ink); padding-top: 10px; }
+.fieldwork-mini-column.is-focus { border-color: var(--brand-primary); }
+.fieldwork-mini-column span { margin-bottom: 5px; color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+.fieldwork-mini-column span b { float: right; color: var(--ink); }
+.fieldwork-mini-column i { display: block; height: 38px; border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); background: var(--paper); box-shadow: 3px 3px 0 color-mix(in srgb, var(--ink) 7%, transparent); }
+.fieldwork-mini-column.is-focus i:nth-child(3) { background: color-mix(in srgb, var(--brand-primary) 17%, white); }
+.fieldwork-mini-inbox { position: absolute; right: 27px; bottom: 26px; z-index: 2; display: flex; width: min(320px, calc(100% - 54px)); align-items: center; gap: 10px; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); background: var(--paper); padding: 13px; box-shadow: 7px 8px 0 var(--coral); }
+.fieldwork-mini-inbox-avatar { display: flex; width: 29px; height: 29px; align-items: center; justify-content: center; background: var(--ink); color: var(--paper); font-size: 10px; font-weight: 900; }
+.fieldwork-mini-inbox div { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 4px; }
+.fieldwork-mini-inbox b { color: var(--ink); font-size: 10px; }
+.fieldwork-mini-inbox small { overflow: hidden; color: var(--ink-soft); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-mini-inbox-dot { width: 7px; height: 7px; border-radius: 99px; background: var(--moss); }
+.fieldwork-public-system { max-width: 1440px; margin: 0 auto; border-top: 1px solid var(--line); padding: 100px clamp(20px, 8vw, 120px); }
+.fieldwork-public-section-head h2, .fieldwork-public-niches h2 { margin-top: 15px; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(38px, 5vw, 68px); font-weight: 500; letter-spacing: -.075em; line-height: .96; }
+.fieldwork-public-capabilities { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 65px; background: var(--line); }
+.fieldwork-public-capabilities > div { position: relative; min-height: 250px; background: var(--paper); padding: 28px; }
+.fieldwork-public-capabilities svg { color: var(--brand-primary); }
+.fieldwork-public-capabilities span { position: absolute; top: 29px; right: 28px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; }
+.fieldwork-public-capabilities h3 { margin-top: 45px; color: var(--ink); font-size: 18px; font-weight: 950; letter-spacing: -.04em; }
+.fieldwork-public-capabilities p { max-width: 280px; margin-top: 13px; color: var(--ink-soft); font-size: 12px; line-height: 1.65; }
+.fieldwork-public-niches { display: grid; max-width: 1440px; margin: 0 auto; grid-template-columns: .85fr 1.15fr; gap: clamp(35px, 8vw, 130px); background: var(--ink); padding: 100px clamp(20px, 8vw, 120px); color: var(--paper); }
+.fieldwork-public-niches .fieldwork-page-kicker { color: #a7b9ff; }
+.fieldwork-public-niches h2 { color: var(--paper); }
+.fieldwork-niche-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 25px; align-content: center; }
+.fieldwork-niche-list span { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(255,255,255,.14); padding: 17px 0; color: #d2d9db; font-size: 12px; }
+.fieldwork-niche-list svg { color: var(--moss); }
+.fieldwork-public-footer { display: flex; max-width: 1440px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 20px; padding: 26px clamp(20px, 5vw, 76px); color: var(--ink-faint); font-size: 10px; }
+.fieldwork-auth-shell { display: grid; min-height: 100vh; grid-template-columns: minmax(340px, .82fr) 1.18fr; background: var(--paper); }
+.fieldwork-auth-aside { display: flex; flex-direction: column; justify-content: space-between; background: var(--ink); padding: 34px clamp(28px, 6vw, 90px); color: var(--paper); }
+.fieldwork-auth-aside .fieldwork-wordmark { color: var(--paper); }
+.fieldwork-auth-aside h1 { margin-top: 18px; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(52px, 6vw, 90px); font-weight: 500; letter-spacing: -.08em; line-height: .92; }
+.fieldwork-auth-aside p:not(.fieldwork-page-kicker) { max-width: 350px; margin-top: 24px; color: #aeb9bd; font-size: 14px; line-height: 1.7; }
+.fieldwork-auth-aside .fieldwork-page-kicker { color: #91a8ff; }
+.fieldwork-auth-aside-note { color: #788689; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .12em; }
+.fieldwork-auth-callout { display: flex; max-width: 340px; align-items: flex-start; gap: 10px; margin-top: 34px; border-left: 2px solid var(--coral); padding: 12px 0 12px 14px; color: #d4dddf; font-size: 11px; line-height: 1.5; }
+.fieldwork-auth-callout svg { flex-shrink: 0; color: var(--coral); }
+.fieldwork-auth-main { display: flex; align-items: center; justify-content: center; padding: 35px 25px; }
+.fieldwork-auth-card { width: min(430px, 100%); }
+.fieldwork-auth-back { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 850; }
+.fieldwork-auth-icon { display: inline-flex; width: 38px; height: 38px; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--brand-primary) 30%, transparent); border-radius: 11px; background: color-mix(in srgb, var(--brand-primary) 10%, white); color: var(--brand-primary); }
+.fieldwork-auth-icon.is-coral { border-color: color-mix(in srgb, var(--coral) 30%, transparent); background: color-mix(in srgb, var(--coral) 10%, white); color: var(--coral); }
+.fieldwork-auth-card h2 { color: var(--ink); font-size: 31px; font-weight: 950; letter-spacing: -.06em; }
+.fieldwork-auth-card .mb-7 > p:last-child, .fieldwork-auth-card .mb-8 > p:last-child { margin-top: 8px; color: var(--ink-soft); font-size: 12px; line-height: 1.55; }
+.fieldwork-auth-divider { display: flex; align-items: center; gap: 10px; margin: 22px 0; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.fieldwork-auth-divider::before, .fieldwork-auth-divider::after { height: 1px; flex: 1; background: var(--line); content: ''; }
+.fieldwork-auth-error { border-left: 2px solid var(--coral); background: color-mix(in srgb, var(--coral) 7%, white); padding: 10px 12px; color: var(--coral); font-size: 11px; line-height: 1.5; }
+.fieldwork-auth-switch { margin-top: 23px; color: var(--ink-soft); text-align: center; font-size: 11px; }
+.fieldwork-auth-switch a { color: var(--brand-primary); font-weight: 900; }
+.fieldwork-calendar-grid { display: grid; grid-template-columns: minmax(260px, .6fr) minmax(0, 1.4fr); gap: 15px; }
+.fieldwork-calendar-create { align-self: start; padding: 22px; }
+.fieldwork-calendar-aside-head { display: flex; align-items: flex-start; gap: 12px; }
+.fieldwork-calendar-aside-head h2 { margin-top: 2px; color: var(--ink); font-size: 19px; font-weight: 950; letter-spacing: -.05em; }
+.fieldwork-calendar-copy { margin: 18px 0 24px; color: var(--ink-soft); font-size: 11px; line-height: 1.6; }
+.fieldwork-calendar-loading { display: flex; min-height: 500px; align-items: center; justify-content: center; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; }
+.fieldwork-calendar-surface { min-width: 0; overflow: hidden; }
+.fieldwork-calendar-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+.fieldwork-calendar-header h2 { color: var(--ink); font-family: Georgia, Cambria, serif; font-size: 29px; font-weight: 700; letter-spacing: -.06em; }
+.fieldwork-calendar-header h2 em { color: var(--brand-primary); font-style: normal; }
+.fieldwork-calendar-nav, .fieldwork-calendar-close { display: inline-flex; align-items: center; justify-content: center; width: 31px; height: 31px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink-soft); }
+.fieldwork-calendar-week, .fieldwork-calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); }
+.fieldwork-calendar-week { border-bottom: 1px solid var(--line); background: var(--paper); }
+.fieldwork-calendar-week span { padding: 11px 8px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; text-align: right; text-transform: uppercase; }
+.fieldwork-calendar-day { min-height: 105px; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: white; padding: 8px; text-align: left; }
+.fieldwork-calendar-day:hover { background: color-mix(in srgb, var(--brand-primary) 5%, white); }
+.fieldwork-calendar-day.is-today { background: color-mix(in srgb, var(--brand-primary) 6%, white); }
+.fieldwork-calendar-day.is-blank { background: var(--paper); }
+.fieldwork-calendar-day-number { display: inline-flex; width: 23px; height: 23px; align-items: center; justify-content: center; border-radius: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 900; }
+.fieldwork-calendar-day.is-today .fieldwork-calendar-day-number { background: var(--brand-primary); color: white; }
+.fieldwork-calendar-day i { display: block; overflow: hidden; margin-top: 5px; border-left: 2px solid var(--brand-primary); background: color-mix(in srgb, var(--brand-primary) 7%, white); padding: 4px 5px; color: var(--ink-soft); font-size: 8px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-calendar-day i b { margin-right: 4px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; }
+.fieldwork-calendar-day small { display: block; margin-top: 4px; color: var(--ink-faint); font-size: 8px; }
+.fieldwork-calendar-modal-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; background: rgba(21,32,43,.38); padding: 20px; backdrop-filter: blur(8px); }
+.fieldwork-calendar-modal { width: min(440px, 100%); border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 22px; box-shadow: 0 28px 80px rgba(21,32,43,.2); }
+.fieldwork-calendar-modal > header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; }
+.fieldwork-calendar-modal h3 { color: var(--ink); font-family: Georgia, Cambria, serif; font-size: 23px; font-weight: 700; letter-spacing: -.05em; }
+.fieldwork-calendar-event { display: flex; gap: 12px; border: 1px solid var(--line); border-radius: 9px; background: white; padding: 13px; }
+.fieldwork-calendar-event > span { display: flex; align-items: center; gap: 4px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; }
+.fieldwork-calendar-event > div { display: flex; flex-direction: column; gap: 4px; }
+.fieldwork-calendar-event strong { color: var(--ink); font-size: 12px; }
+.fieldwork-calendar-event small { color: var(--ink-soft); font-size: 10px; }
+.fieldwork-calendar-empty { border: 1px dashed var(--line); padding: 45px 20px; color: var(--ink-faint); font-size: 11px; text-align: center; }
+.fieldwork-settings-page { color: var(--ink); }
+.fieldwork-settings-card { border: 1px solid var(--line); border-radius: 12px; background: white; padding: 24px; box-shadow: var(--shadow-paper); }
+.fieldwork-settings-card h3 { color: var(--ink); font-size: 18px; font-weight: 950; letter-spacing: -.04em; }
+.fieldwork-settings-card label { color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.fieldwork-settings-page input:not([type='color']), .fieldwork-settings-page select { border-color: var(--line); border-radius: 7px; background: white; color: var(--ink); }
+.fieldwork-settings-page button { transition: transform .18s var(--ease-field), filter .18s var(--ease-field); }
+.fieldwork-form-builder-page > div:last-child { min-height: 560px; }
+.fieldwork-form-builder-page .bg-white, .fieldwork-form-builder-page [class*='rounded-2xl'], .fieldwork-form-builder-page [class*='rounded-xl'] { border-color: var(--line); box-shadow: var(--shadow-paper); }
+@media (max-width: 1023px) { .fieldwork-topbar { min-height: 76px; } .fieldwork-topbar-actions .fieldwork-search-link { display: none; } }
+@media (max-width: 900px) { .fieldwork-public-hero, .fieldwork-public-niches, .fieldwork-auth-shell { grid-template-columns: 1fr; } .fieldwork-public-hero { min-height: auto; padding-top: 55px; } .fieldwork-public-visual { min-height: 390px; } .fieldwork-auth-aside { min-height: 340px; gap: 60px; } .fieldwork-auth-aside h1 { font-size: 62px; } }
+@media (max-width: 640px) { .fieldwork-public-header { padding: 18px; } .fieldwork-public-header > .fieldwork-primary-button { padding: 0 10px; font-size: 10px; } .fieldwork-public-hero { padding: 50px 20px 70px; } .fieldwork-public-hero-copy h1 { font-size: 66px; } .fieldwork-public-lede { font-size: 15px; } .fieldwork-public-actions { flex-direction: column; align-items: stretch; } .fieldwork-public-visual { min-height: 350px; padding: 24px; } .fieldwork-mini-pipeline { gap: 6px; } .fieldwork-mini-column { min-height: 160px; } .fieldwork-public-system { padding: 70px 20px; } .fieldwork-public-capabilities, .fieldwork-niche-list { grid-template-columns: 1fr; } .fieldwork-public-niches { padding: 70px 20px; } .fieldwork-public-footer { flex-wrap: wrap; padding: 22px 20px; } .fieldwork-auth-aside { min-height: 290px; padding: 25px 22px; } .fieldwork-auth-aside h1 { font-size: 54px; } .fieldwork-auth-aside p:not(.fieldwork-page-kicker) { margin-top: 15px; } .fieldwork-auth-main { padding: 30px 22px 50px; } }
+@media (max-width: 640px) { .fieldwork-topbar { align-items: flex-start; padding: 14px 16px; } .fieldwork-topbar-actions { gap: 6px; } .fieldwork-page-intro { align-items: flex-start; flex-direction: column; gap: 16px; } .fieldwork-main { padding: 24px 16px 48px; } .fieldwork-page-title { font-size: 38px; } .fieldwork-pipeline-toolbar { align-items: flex-start; flex-direction: column; } .fieldwork-pipeline-filter { width: 100%; justify-content: space-between; } .fieldwork-pipeline-filter select { flex: 1; } }
+@media (max-width: 820px) { .fieldwork-inbox-grid { grid-template-columns: 1fr; } .fieldwork-inbox-list { min-height: auto; } .fieldwork-thread-list { max-height: 310px; } .fieldwork-conversation { min-height: 570px; } .fieldwork-conversation-head { align-items: flex-start; flex-direction: column; } .fieldwork-conversation-head > div:last-child { width: 100%; } .fieldwork-secondary-button { flex: 1; justify-content: center; } }
+@media (max-width: 700px) { .fieldwork-lead-hero-main { align-items: flex-start; flex-direction: column; padding: 22px; } .fieldwork-lead-hero-actions { padding: 0 22px 20px; } .fieldwork-lead-stats { grid-template-columns: repeat(2, 1fr); } .fieldwork-lead-stats > div:nth-child(2) { border-right: 0; } }
+@media (prefers-reduced-motion: no-preference) { .fieldwork-panel, .fieldwork-metric { animation: fieldwork-enter .42s var(--ease-field) both; } @keyframes fieldwork-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } }

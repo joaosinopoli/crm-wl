@@ -1,144 +1,77 @@
+// Fieldwork OS: shell editorial para operações SaaS white-label. O rail organiza contexto, sinal e próximo movimento.
 'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-import type { ReactNode } from 'react'
-import {
-  BarChart3,
-  CalendarDays,
-  ChevronDown,
-  ClipboardCheck,
-  ContactRound,
-  FileBarChart,
-  History,
-  KanbanSquare,
-  LayoutDashboard,
-  Menu,
-  Settings,
-  SlidersHorizontal,
-  UsersRound,
-  X,
-} from 'lucide-react'
+import { useState, type ReactNode } from 'react'
+import { Activity, ArrowUpRight, CalendarDays, CheckSquare2, ChevronDown, ContactRound, FileBarChart2, History, LayoutDashboard, Menu, MessageSquareText, Settings2, SlidersHorizontal, UsersRound, X, Zap } from 'lucide-react'
 
-type UserRole = string
-
-type NavItem = {
-  href: string
-  label: string
-  description: string
-  icon: typeof LayoutDashboard
-  badge?: string
-}
-
-function getOperationItems(leadLabel = 'Clientes ativos', pipelineLabel = 'Funil de vendas'): NavItem[] {
-  return [
-    { href: '/dashboard', label: 'Visão geral', description: 'Indicadores e resumo comercial', icon: LayoutDashboard },
-    { href: '/dashboard/kanban', label: pipelineLabel, description: 'Negociações em movimento', icon: KanbanSquare },
-    { href: '/dashboard/leads', label: leadLabel, description: 'Base de leads em aberto', icon: ContactRound },
-    { href: '/dashboard/tasks', label: 'Tarefas e follow-ups', description: 'Próximas ações comerciais', icon: ClipboardCheck, badge: 'Novo' },
-    { href: '/dashboard/agenda', label: 'Agenda', description: 'Compromissos e reuniões', icon: CalendarDays },
-  ]
-}
+type NavItem = { href: string; label: string; description: string; icon: typeof LayoutDashboard; signal?: 'hot' | 'new' }
 
 const insightItems: NavItem[] = [
-  { href: '/dashboard/relatorios', label: 'Relatórios', description: 'Desempenho por etapa e período', icon: FileBarChart },
-  { href: '/dashboard/arquivados', label: 'Histórico de vendas', description: 'Negócios ganhos e perdidos', icon: History },
+  { href: '/dashboard/relatorios', label: 'Radar de negócio', description: 'Leitura do pipeline', icon: FileBarChart2 },
+  { href: '/dashboard/arquivados', label: 'Histórico', description: 'Fechos e aprendizagem', icon: History },
 ]
 
 const adminItems: NavItem[] = [
-  { href: '/dashboard/team', label: 'Equipe', description: 'Pessoas e responsabilidades', icon: UsersRound },
-  { href: '/dashboard/form-builder', label: 'Campos personalizados', description: 'Dados específicos do negócio', icon: SlidersHorizontal },
-  { href: '/dashboard/settings', label: 'Configurações', description: 'Funil e workspace', icon: Settings },
+  { href: '/dashboard/team', label: 'Pessoas', description: 'Papéis e responsabilidades', icon: UsersRound },
+  { href: '/dashboard/form-builder', label: 'Campos', description: 'Vocabulário do processo', icon: SlidersHorizontal },
+  { href: '/dashboard/automacoes', label: 'Automações', description: 'Gatilhos e próximo passo', icon: Zap },
+  { href: '/dashboard/settings', label: 'Workspace', description: 'Marca e preferências', icon: Settings2 },
 ]
 
-function isItemActive(pathname: string, href: string) {
+function getOperationItems(leadLabel = 'Clientes', pipelineLabel = 'Pipeline'): NavItem[] {
+  return [
+    { href: '/dashboard', label: 'Hoje', description: 'O que merece atenção', icon: LayoutDashboard },
+    { href: '/dashboard/kanban', label: pipelineLabel, description: 'Negócios em movimento', icon: Activity, signal: 'hot' },
+    { href: '/dashboard/leads', label: leadLabel, description: 'Base viva de relacionamento', icon: ContactRound },
+    { href: '/dashboard/conversas', label: 'Conversas', description: 'Inbox ligada ao contexto do lead', icon: MessageSquareText, signal: 'hot' },
+    { href: '/dashboard/tasks', label: 'Próximos movimentos', description: 'Ações que não podem esperar', icon: CheckSquare2, signal: 'new' },
+    { href: '/dashboard/agenda', label: 'Calendário', description: 'Tempo reservado para avançar', icon: CalendarDays },
+  ]
+}
+
+function activePath(pathname: string, href: string) {
   return pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
 }
 
-function NavLink({ item, pathname, compact = false, brandPrimaryColor = '#2563eb' }: { item: NavItem; pathname: string; compact?: boolean; brandPrimaryColor?: string }) {
+function NavItemLink({ item, pathname, compact, brand }: { item: NavItem; pathname: string; compact?: boolean; brand: string }) {
+  const active = activePath(pathname, item.href)
   const Icon = item.icon
-  const active = isItemActive(pathname, item.href)
-
   return (
-    <Link
-      href={item.href}
-      title={item.description}
-      style={active ? { color: brandPrimaryColor, backgroundColor: `${brandPrimaryColor}12` } : undefined}
-      className={`group flex items-center gap-3 rounded-xl transition-all ${compact ? 'px-3 py-3' : 'px-3.5 py-2.5'} ${active ? 'shadow-sm ring-1 ring-blue-100' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
-      aria-current={active ? 'page' : undefined}
-    >
-      <span style={active ? { backgroundColor: brandPrimaryColor } : undefined} className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${active ? 'text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-blue-600'}`}>
-        <Icon size={16} strokeWidth={active ? 2.4 : 2} />
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-[13px] font-semibold">{item.label}</span>
-        {!compact && <span className="mt-0.5 block truncate text-[10px] font-medium text-gray-400 group-hover:text-gray-500">{item.description}</span>}
-      </span>
-      {item.badge && <span className="rounded-full bg-blue-100 px-1.5 py-0.5 text-[9px] font-bold text-blue-700">{item.badge}</span>}
+    <Link href={item.href} aria-current={active ? 'page' : undefined} className={`fieldwork-nav-item group ${active ? 'is-active' : ''} ${compact ? 'is-compact' : ''}`} style={active ? { '--nav-brand': brand } as React.CSSProperties : undefined}>
+      <span className="fieldwork-nav-index">{String(['/dashboard', '/dashboard/kanban', '/dashboard/leads', '/dashboard/conversas', '/dashboard/tasks', '/dashboard/agenda', '/dashboard/relatorios', '/dashboard/arquivados', '/dashboard/team', '/dashboard/form-builder', '/dashboard/settings'].indexOf(item.href) + 1).padStart(2, '0')}</span>
+      <span className="fieldwork-nav-icon"><Icon size={17} strokeWidth={active ? 2.5 : 1.9} /></span>
+      <span className="min-w-0 flex-1"><span className="block truncate text-[13px] font-bold">{item.label}</span>{!compact && <span className="mt-0.5 block truncate text-[10px] font-medium text-[var(--ink-soft)]">{item.description}</span>}</span>
+      {item.signal === 'hot' && <span className="fieldwork-dot fieldwork-dot-hot" aria-label="Alta prioridade" />}
+      {item.signal === 'new' && <span className="fieldwork-signal">Ação</span>}
+      {active && <ArrowUpRight size={14} className="shrink-0 opacity-70" />}
     </Link>
   )
 }
 
-function NavGroup({ label, items, pathname, compact = false, brandPrimaryColor = '#2563eb' }: { label: string; items: NavItem[]; pathname: string; compact?: boolean; brandPrimaryColor?: string }) {
-  return (
-    <div className="space-y-1.5">
-      <div className={`flex items-center gap-2 px-3.5 pb-1 text-[10px] font-black uppercase tracking-[0.14em] text-gray-400 ${compact ? 'pt-3' : 'pt-5'}`}>
-        <span>{label}</span>
-        <span className="h-px flex-1 bg-gray-100" />
-      </div>
-      {items.map((item) => <NavLink key={item.href} item={item} pathname={pathname} compact={compact} brandPrimaryColor={brandPrimaryColor} />)}
-    </div>
-  )
+function NavGroup({ index, label, items, pathname, compact, brand }: { index: string; label: string; items: NavItem[]; pathname: string; compact?: boolean; brand: string }) {
+  return <section className={`fieldwork-nav-group ${compact ? 'is-compact' : ''}`}><div className="fieldwork-nav-label"><span>{index}</span>{label}<i /></div>{items.map((item) => <NavItemLink key={item.href} item={item} pathname={pathname} compact={compact} brand={brand} />)}</section>
 }
 
-export default function DashboardNav({ companyName, userRole, brandPrimaryColor = '#2563eb', leadLabel, pipelineLabel, children }: { companyName: string; userRole: UserRole; brandPrimaryColor?: string; leadLabel?: string; pipelineLabel?: string; children?: ReactNode }) {
+function FieldworkMark({ color }: { color: string }) {
+  return <span className="fieldwork-mark" style={{ '--mark-color': color } as React.CSSProperties}><i /><i /><i /></span>
+}
+
+export default function DashboardNav({ companyName, userRole, brandPrimaryColor = '#3158D4', leadLabel, pipelineLabel, children }: { companyName: string; userRole: string; brandPrimaryColor?: string; leadLabel?: string; pipelineLabel?: string; children?: ReactNode }) {
   const pathname = usePathname()
   const operationItems = getOperationItems(leadLabel, pipelineLabel)
-
-  return (
-    <aside className="hidden w-[286px] shrink-0 flex-col border-r border-gray-200 bg-white lg:flex">
-      <div className="flex h-[76px] items-center gap-3 border-b border-gray-200 px-6">
-        <div style={{ backgroundColor: brandPrimaryColor }} className="flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-sm"><BarChart3 size={18} /></div>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-black tracking-tight text-gray-900">{companyName}</p>
-          <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.13em] text-blue-600">CRM Workspace</p>
-        </div>
-      </div>
-      <nav className="flex-1 overflow-y-auto px-4 py-3" aria-label="Navegação principal">
-        <NavGroup label="Operação" items={operationItems} pathname={pathname} brandPrimaryColor={brandPrimaryColor} />
-        <NavGroup label="Inteligência" items={insightItems} pathname={pathname} brandPrimaryColor={brandPrimaryColor} />
-        {userRole === 'admin' && <NavGroup label="Gestão" items={adminItems} pathname={pathname} brandPrimaryColor={brandPrimaryColor} />}
-      </nav>
-      <div className="border-t border-gray-200 px-4 py-3">
-        <p className="px-3 text-[10px] leading-4 text-gray-400">Dica: use a Visão geral para começar o dia e Tarefas para decidir o próximo contacto.</p>
-        {children}
-      </div>
-    </aside>
-  )
+  return <aside className="fieldwork-rail hidden lg:flex">
+    <div className="fieldwork-brand"><FieldworkMark color={brandPrimaryColor} /><div className="min-w-0"><p className="truncate text-sm font-black tracking-[-0.03em] text-[var(--ink)]">{companyName}</p><p className="fieldwork-kicker">CRM / FIELDWORK</p></div></div>
+    <div className="fieldwork-rail-status"><span className="fieldwork-live-dot" /> Workspace online <span className="ml-auto font-mono text-[9px] text-[var(--ink-soft)]">{userRole === 'owner' ? 'OWNER' : userRole === 'admin' ? 'ADMIN' : 'TEAM'}</span></div>
+    <nav className="fieldwork-nav" aria-label="Navegação principal"><NavGroup index="01" label="Operação" items={operationItems} pathname={pathname} brand={brandPrimaryColor} /><NavGroup index="02" label="Leitura" items={insightItems} pathname={pathname} brand={brandPrimaryColor} />{(userRole === 'admin' || userRole === 'owner') && <NavGroup index="03" label="Controlo" items={adminItems} pathname={pathname} brand={brandPrimaryColor} />}</nav>
+    <div className="fieldwork-rail-bottom"><div className="fieldwork-next"><span className="fieldwork-kicker">PRÓXIMO MOVIMENTO</span><strong>Começar pelo Hoje</strong><span>Veja a fila antes de abrir mais frentes.</span></div>{children}</div>
+  </aside>
 }
 
-export function MobileDashboardNav({ userRole, brandPrimaryColor = '#2563eb', leadLabel, pipelineLabel }: { userRole: UserRole; brandPrimaryColor?: string; leadLabel?: string; pipelineLabel?: string }) {
+export function MobileDashboardNav({ userRole, brandPrimaryColor = '#3158D4', leadLabel, pipelineLabel }: { userRole: string; brandPrimaryColor?: string; leadLabel?: string; pipelineLabel?: string }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const operationItems = getOperationItems(leadLabel, pipelineLabel)
-
-  return (
-    <div className="relative lg:hidden">
-      <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Fechar navegação' : 'Abrir navegação'} className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-sm">
-        {open ? <X size={19} /> : <Menu size={19} />}
-      </button>
-      {open && (
-        <div className="absolute left-0 top-12 z-50 w-[min(330px,calc(100vw-32px))] rounded-2xl border border-gray-200 bg-white p-3 shadow-2xl">
-          <div className="mb-1 flex items-center justify-between px-3 py-2">
-            <span className="text-xs font-black uppercase tracking-[0.14em] text-gray-400">Navegação</span>
-            <ChevronDown size={15} className="rotate-180 text-gray-400" />
-          </div>
-          <NavGroup label="Operação" items={operationItems} pathname={pathname} compact brandPrimaryColor={brandPrimaryColor} />
-          <NavGroup label="Inteligência" items={insightItems} pathname={pathname} compact brandPrimaryColor={brandPrimaryColor} />
-          {userRole === 'admin' && <NavGroup label="Gestão" items={adminItems} pathname={pathname} compact brandPrimaryColor={brandPrimaryColor} />}
-        </div>
-      )}
-    </div>
-  )
+  return <div className="relative lg:hidden"><button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Fechar navegação' : 'Abrir navegação'} className="fieldwork-mobile-trigger">{open ? <X size={18} /> : <Menu size={18} />}</button>{open && <div className="fieldwork-mobile-sheet"><div className="flex items-center justify-between border-b border-[var(--line)] px-4 pb-4"><div className="flex items-center gap-2"><FieldworkMark color={brandPrimaryColor} /><span className="fieldwork-kicker">NAVEGAÇÃO</span></div><button type="button" onClick={() => setOpen(false)} aria-label="Fechar menu" className="text-[var(--ink-soft)]"><ChevronDown size={16} className="rotate-180" /></button></div><NavGroup index="01" label="Operação" items={operationItems} pathname={pathname} compact brand={brandPrimaryColor} /><NavGroup index="02" label="Leitura" items={insightItems} pathname={pathname} compact brand={brandPrimaryColor} />{(userRole === 'admin' || userRole === 'owner') && <NavGroup index="03" label="Controlo" items={adminItems} pathname={pathname} compact brand={brandPrimaryColor} />}</div>}</div>
 }

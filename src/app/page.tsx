@@ -1,100 +1,13 @@
+import { ArrowRight, BarChart3, CheckCircle2, Inbox, Layers3, ShieldCheck } from 'lucide-react'
+import Link from 'next/link'
 import { createClient } from '@/src/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import GoogleLoginButton from '@/src/components/GoogleLoginButton'
 
+// Fieldwork OS: a página pública deve vender clareza operacional, não promessas genéricas de crescimento.
 export default async function LandingPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-
-  // Se já tem conta e está logado, pula a landing page e vai pro CRM
-  if (user) {
-    redirect('/dashboard')
-  }
-
-  // Link formatado para o seu WhatsApp com mensagem pronta
-  const whatsappLink = "https://wa.me/5513981091534?text=Ol%C3%A1%2C%20visitei%20o%20site%20e%20quero%20saber%20mais%20sobre%20o%20CRM!"
-
-  return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans selection:bg-blue-600 selection:text-white">
-      
-      {/* HEADER SIMPLES */}
-      <header className="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-        <div className="text-2xl font-black text-blue-700 tracking-tighter">
-          CRM<span className="text-gray-900">Pro</span>
-        </div>
-        <a 
-          href="/login" 
-          className="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors"
-        >
-          Já tenho conta ➔
-        </a>
-      </header>
-
-      {/* HERO SECTION - FOCADA EM CONVERSÃO */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24 text-center">
-        
-        <div className="inline-block bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-6">
-          Aumente suas vendas em até 40%
-        </div>
-
-        <h1 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tight max-w-4xl leading-[1.1] mb-6">
-          Pare de perder clientes no <span className="text-green-500">WhatsApp</span>.
-        </h1>
-        
-        <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed font-medium">
-          O único CRM feito para organizar seus atendimentos, automatizar seus retornos e garantir que <strong className="text-gray-800">nenhuma venda caia no esquecimento</strong>.
-        </p>
-
-        {/* CTA PRINCIPAL (Google) e SECUNDÁRIO (WhatsApp) */}
-        <div className="w-full max-w-md flex flex-col gap-4">
-          <GoogleLoginButton />
-          
-          <a 
-            href={whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full bg-transparent text-gray-600 font-bold text-sm py-3 hover:text-gray-900 transition-colors"
-          >
-            Tem dúvidas? <span className="underline decoration-green-500 decoration-2 underline-offset-4 text-gray-900">Fale com um consultor no WhatsApp</span>
-          </a>
-        </div>
-      </main>
-
-      {/* SESSÃO DE SOCIAL PROOF / BENEFÍCIOS RÁPIDOS */}
-      <section className="bg-white border-t border-gray-200 py-16 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          
-          <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-4">🎯</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Funil Intuitivo</h3>
-            <p className="text-sm text-gray-500 font-medium leading-relaxed">
-              Arraste e solte seus clientes por etapas. Saiba exatamente quem contatar hoje e quem está pronto para comprar.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-3xl mb-4">💰</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Controle Financeiro</h3>
-            <p className="text-sm text-gray-500 font-medium leading-relaxed">
-              Tenha previsibilidade de caixa. Acompanhe relatórios de conversão e saiba exatamente quanto dinheiro está na mesa.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-4">⚡</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Setup em 30 Segundos</h3>
-            <p className="text-sm text-gray-500 font-medium leading-relaxed">
-              Sem configurações complexas. Entre com sua conta Google, personalize seus campos e comece a vender imediatamente.
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm font-medium">
-        <p>&copy; {new Date().getFullYear()} CRM Pro. Todos os direitos reservados.</p>
-      </footer>
-    </div>
-  )
+  if (user) redirect('/dashboard')
+  return <div className="fieldwork-public-shell"><header className="fieldwork-public-header"><Link href="/" className="fieldwork-wordmark"><span className="fieldwork-wordmark-mark">ƒ</span><span>fieldwork<span className="text-[var(--coral)]">.</span></span></Link><nav className="hidden items-center gap-7 md:flex"><a href="#sistema" className="fieldwork-public-nav-link">Como funciona</a><a href="#nichos" className="fieldwork-public-nav-link">Para quem é</a><Link href="/login" className="fieldwork-public-nav-link">Entrar <ArrowRight size={13} /></Link></nav><Link href="/signup" className="fieldwork-primary-button">Criar workspace <ArrowRight size={14} /></Link></header><main><section className="fieldwork-public-hero"><div className="fieldwork-public-hero-copy"><p className="fieldwork-page-kicker">CRM white-label para equipas em movimento</p><h1>O próximo passo<br /><em>não se perde.</em></h1><p className="fieldwork-public-lede">Fieldwork organiza leads, conversas, tarefas e pipeline numa operação que qualquer negócio consegue adaptar à sua própria linguagem.</p><div className="fieldwork-public-actions"><GoogleLoginButton /><Link href="/signup" className="fieldwork-primary-button fieldwork-primary-button-large">Começar com e-mail <ArrowRight size={16} /></Link></div><p className="fieldwork-public-microcopy"><ShieldCheck size={13} /> Multi-tenant, permissões por equipa e identidade da sua marca.</p></div><div className="fieldwork-public-visual"><div className="fieldwork-surface-note"><span>OPERAÇÃO / AGORA</span><strong>O que merece atenção?</strong><small>3 próximos movimentos sugeridos</small></div><div className="fieldwork-mini-pipeline"><div className="fieldwork-mini-column"><span>Entrada <b>04</b></span><i /><i /><i /></div><div className="fieldwork-mini-column is-focus"><span>Em conversa <b>07</b></span><i /><i /><i /><i /></div><div className="fieldwork-mini-column"><span>Proposta <b>02</b></span><i /><i /></div></div><div className="fieldwork-mini-inbox"><span className="fieldwork-mini-inbox-avatar">M</span><div><b>Marina respondeu</b><small>“Podemos falar amanhã às 10?”</small></div><span className="fieldwork-mini-inbox-dot" /></div></div></section><section id="sistema" className="fieldwork-public-system"><div className="fieldwork-public-section-head"><p className="fieldwork-page-kicker">Uma base, quatro leituras</p><h2>Menos abas abertas.<br /><em>Mais contexto em cada movimento.</em></h2></div><div className="fieldwork-public-capabilities"><div><Inbox size={20} /><span>01</span><h3>Inbox com contexto</h3><p>Conversa, histórico e próxima tarefa no mesmo lugar — sem depender da memória individual.</p></div><div><Layers3 size={20} /><span>02</span><h3>Pipeline que se adapta</h3><p>Etapas, campos e vocabulário configuráveis para serviços, saúde, educação, imobiliário ou retalho.</p></div><div><BarChart3 size={20} /><span>03</span><h3>Leitura da operação</h3><p>Relatórios que mostram onde o valor está e quais follow-ups estão a escapar.</p></div></div></section><section id="nichos" className="fieldwork-public-niches"><div><p className="fieldwork-page-kicker">A sua operação, a sua marca</p><h2>O CRM não obriga<br /><em>o negócio a caber nele.</em></h2></div><div className="fieldwork-niche-list"><span>Serviços profissionais <CheckCircle2 size={14} /></span><span>Imobiliário e vendas consultivas <CheckCircle2 size={14} /></span><span>Saúde e educação <CheckCircle2 size={14} /></span><span>Retalho e operações locais <CheckCircle2 size={14} /></span><span>Tecnologia e equipas comerciais <CheckCircle2 size={14} /></span></div></section></main><footer className="fieldwork-public-footer"><Link href="/" className="fieldwork-wordmark"><span className="fieldwork-wordmark-mark">ƒ</span><span>fieldwork<span className="text-[var(--coral)]">.</span></span></Link><span>Um sistema de trabalho para relações que importam.</span><Link href="/login" className="fieldwork-public-nav-link">Já tenho uma conta <ArrowRight size={13} /></Link></footer></div>
 }

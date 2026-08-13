@@ -13,7 +13,7 @@ export default async function FormBuilderPage() {
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'owner') {
     redirect('/dashboard')
   }
 
@@ -24,10 +24,13 @@ export default async function FormBuilderPage() {
     .order('position', { ascending: true })
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Construtor de Formulário do Lead</h2>
-        <p className="text-sm text-gray-500 mt-1">Crie e organize os campos personalizados do seu nicho. O que você definir aqui aparecerá no modal de Novo Lead e na tela de Edição.</p>
+    <div className="fieldwork-form-builder-page mx-auto flex w-full max-w-5xl flex-col">
+      <div className="fieldwork-page-intro">
+        <div>
+          <p className="fieldwork-page-kicker">11 / Linguagem da operação</p>
+          <h1 className="fieldwork-page-title">O seu processo<br /><em className="not-italic text-[var(--brand-primary)]">tem campos próprios.</em></h1>
+          <p className="fieldwork-page-copy">Crie e organize os dados que a equipa precisa para entender cada lead, sem transformar o formulário num obstáculo.</p>
+        </div>
       </div>
 
       <div className="flex-1 overflow-hidden">

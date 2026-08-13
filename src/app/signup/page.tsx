@@ -1,94 +1,9 @@
 import Link from 'next/link'
+import { ArrowLeft, ArrowRight, Compass, Sparkles } from 'lucide-react'
 import { signup } from '@/src/app/actions/auth'
 import GoogleLoginButton from '@/src/components/GoogleLoginButton'
 
-export default function SignupPage({ searchParams }: { searchParams: { error?: string } }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-4 font-sans selection:bg-blue-600 selection:text-white">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-        
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-black text-gray-900 mb-2">Crie sua conta</h1>
-          <p className="text-sm text-gray-500 font-medium">Comece a transformar seus leads em clientes hoje mesmo.</p>
-        </div>
-
-        {/* Botão do Google focado em facilidade */}
-        <GoogleLoginButton />
-
-        {/* Divisor Visual */}
-        <div className="flex items-center gap-4 my-6">
-          <div className="flex-1 h-px bg-gray-200"></div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ou</span>
-          <div className="flex-1 h-px bg-gray-200"></div>
-        </div>
-
-        {/* Formulário de Criação Manual */}
-        <form action={signup} className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nome da Empresa / Loja</label>
-            <input 
-              name="companyName" 
-              type="text" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="Ex: Base Dois Açaí" 
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Seu Nome Completo</label>
-            <input 
-              name="fullName" 
-              type="text" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="Ex: João Victor" 
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
-            <input 
-              name="email" 
-              type="email" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="seu@email.com" 
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Senha</label>
-            <input 
-              name="password" 
-              type="password" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="Crie uma senha forte" 
-            />
-          </div>
-          
-          {searchParams?.error && (
-            <div className="text-red-500 text-xs font-medium bg-red-50 p-3 rounded-xl border border-red-100">
-              {searchParams.error}
-            </div>
-          )}
-          
-          <button 
-            type="submit" 
-            className="w-full bg-blue-600 text-white py-3.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors shadow-sm mt-2"
-          >
-            Criar Conta Gratuitamente
-          </button>
-        </form>
-
-        <p className="text-center text-sm text-gray-600 font-medium mt-8">
-          Já tem uma conta?{' '}
-          <Link href="/login" className="text-blue-600 font-bold hover:underline decoration-2 underline-offset-4">
-            Fazer login
-          </Link>
-        </p>
-      </div>
-    </div>
-  )
+// Fieldwork OS: o cadastro apresenta a criação do workspace como uma decisão de operação, não como um formulário genérico.
+export default function SignupPage({ searchParams }: { searchParams: { error?: string; message?: string } }) {
+  return <div className="fieldwork-auth-shell"><div className="fieldwork-auth-aside is-signup"><Link href="/" className="fieldwork-wordmark"><span className="fieldwork-wordmark-mark">ƒ</span><span>fieldwork<span className="text-[var(--coral)]">.</span></span></Link><div><p className="fieldwork-page-kicker">Primeiro passo</p><h1>Construa um<br /><em>workspace seu.</em></h1><p>Comece com a identidade da sua empresa. Depois, ajuste pipeline, equipa, campos e linguagem à medida que a operação cresce.</p><div className="fieldwork-auth-callout"><Sparkles size={16} /><span>O setup inicial já inclui pipeline, inbox, tarefas e relatórios.</span></div></div><span className="fieldwork-auth-aside-note">WHITE-LABEL BY DESIGN</span></div><main className="fieldwork-auth-main"><div className="fieldwork-auth-card"><Link href="/" className="fieldwork-auth-back"><ArrowLeft size={14} /> Voltar ao início</Link><div className="mb-7 mt-10"><span className="fieldwork-auth-icon is-coral"><Compass size={18} /></span><p className="fieldwork-page-kicker mt-7">Novo workspace</p><h2>Comece pela sua realidade.</h2><p>Uma conta. Uma base de trabalho. O seu jeito de vender.</p></div><GoogleLoginButton /><div className="fieldwork-auth-divider"><span>ou criar com e-mail</span></div><form action={signup} className="space-y-4"><div><label className="fieldwork-form-label" htmlFor="signup-company">Nome da empresa ou operação</label><input id="signup-company" name="companyName" type="text" required className="fieldwork-form-input" placeholder="Ex.: Estúdio Norte" /></div><div><label className="fieldwork-form-label" htmlFor="signup-name">O seu nome</label><input id="signup-name" name="fullName" type="text" required className="fieldwork-form-input" placeholder="Ex.: Joana Silva" /></div><div><label className="fieldwork-form-label" htmlFor="signup-email">E-mail de trabalho</label><input id="signup-email" name="email" type="email" required className="fieldwork-form-input" placeholder="voce@empresa.com" /></div><div><label className="fieldwork-form-label" htmlFor="signup-password">Criar senha</label><input id="signup-password" name="password" type="password" required className="fieldwork-form-input" placeholder="Mínimo de 6 caracteres" /></div>{(searchParams?.error || searchParams?.message) && <div className="fieldwork-auth-error">{searchParams.error || searchParams.message}</div>}<button type="submit" className="fieldwork-primary-button w-full justify-center">Criar meu workspace <ArrowRight size={15} /></button></form><p className="fieldwork-auth-switch">Já tem uma conta? <Link href="/login">Entrar no workspace</Link></p></div></main></div>
 }

@@ -1,193 +1,46 @@
 import Link from 'next/link'
+import { ArrowUpRight, CalendarClock, CheckCircle2, Clock3, Flame, Plus, Target } from 'lucide-react'
 import { createTask, getTasks, updateTaskStatus } from '@/src/app/actions/tasks'
 import { getAllLeadsData } from '@/src/app/actions/kanban'
 import type { Task } from '@/src/types/crm'
 
-async function createTaskAction(formData: FormData) {
-  'use server'
-  await createTask(formData)
-}
+// Fieldwork OS: tarefas são a camada que transforma pipeline em ritmo de execução.
+async function createTaskAction(formData: FormData) { 'use server'; await createTask(formData) }
+async function completeTaskAction(taskId: string) { 'use server'; await updateTaskStatus(taskId, 'completed') }
 
-async function completeTaskAction(taskId: string) {
-  'use server'
-  await updateTaskStatus(taskId, 'completed')
-}
-
-const priorityLabels = {
-  low: 'Baixa',
-  medium: 'Média',
-  high: 'Alta',
-} as const
-
-const priorityClasses = {
-  low: 'bg-slate-100 text-slate-700',
-  medium: 'bg-amber-100 text-amber-800',
-  high: 'bg-red-100 text-red-800',
-} as const
-
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat('pt-BR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(new Date(date))
-}
-
-function startOfToday() {
-  const date = new Date()
-  date.setHours(0, 0, 0, 0)
-  return date.getTime()
-}
+const priorityLabels = { low: 'Baixa', medium: 'Média', high: 'Alta' } as const
+const priorityClasses = { low: 'fieldwork-task-priority-low', medium: 'fieldwork-task-priority-medium', high: 'fieldwork-task-priority-high' } as const
+function formatDate(date: string) { return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date)) }
+function startOfToday() { const date = new Date(); date.setHours(0, 0, 0, 0); return date.getTime() }
 
 export default async function TasksPage() {
-  const [tasksData, leadsData] = await Promise.all([
-    getTasks('all'),
-    getAllLeadsData(),
-  ])
-  const tasks = tasksData.map(task => ({
-    ...task,
-    lead: Array.isArray(task.lead) ? task.lead[0] ?? null : task.lead,
-    assignee: Array.isArray(task.assignee) ? task.assignee[0] ?? null : task.assignee,
-  })) as unknown as Task[]
+  const [tasksData, leadsData] = await Promise.all([getTasks('all'), getAllLeadsData()])
+  const tasks = tasksData.map((task) => ({ ...task, lead: Array.isArray(task.lead) ? task.lead[0] ?? null : task.lead, assignee: Array.isArray(task.assignee) ? task.assignee[0] ?? null : task.assignee })) as unknown as Task[]
   const today = startOfToday()
-  const pending = tasks.filter(task => task.status === 'pending')
-  const overdue = pending.filter(task => new Date(task.due_at).getTime() < today)
-  const todayTasks = pending.filter(task => {
-    const due = new Date(task.due_at)
-    return due.getTime() >= today && due.toDateString() === new Date().toDateString()
-  })
-  const upcoming = pending.filter(task => !overdue.includes(task) && !todayTasks.includes(task))
-  const completed = tasks.filter(task => task.status === 'completed').slice(0, 8)
+  const pending = tasks.filter((task) => task.status === 'pending')
+  const overdue = pending.filter((task) => new Date(task.due_at).getTime() < today)
+  const todayTasks = pending.filter((task) => { const due = new Date(task.due_at); return due.getTime() >= today && due.toDateString() === new Date().toDateString() })
+  const upcoming = pending.filter((task) => !overdue.includes(task) && !todayTasks.includes(task))
+  const completed = tasks.filter((task) => task.status === 'completed').slice(0, 8)
 
-  return (
-    <div className="max-w-7xl mx-auto w-full">
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-        <div>
-          <div className="flex items-center gap-2 text-sm text-blue-600 font-semibold mb-2">
-            <Link href="/dashboard" className="hover:underline">Visão Geral</Link>
-            <span>/</span>
-            <span className="text-gray-500">Tarefas</span>
-          </div>
-          <h2 className="text-3xl font-black text-gray-900">Tarefas e follow-ups</h2>
-          <p className="text-sm text-gray-500 mt-1">Transforme cada negociação numa próxima ação clara e nunca deixe um retorno passar.</p>
-        </div>
-        <div className="grid grid-cols-3 gap-3 text-center">
-          <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
-            <p className="text-2xl font-black text-gray-900">{pending.length}</p>
-            <p className="text-[11px] font-bold uppercase tracking-wide text-gray-400">Pendentes</p>
-          </div>
-          <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3">
-            <p className="text-2xl font-black text-red-700">{overdue.length}</p>
-            <p className="text-[11px] font-bold uppercase tracking-wide text-red-500">Atrasadas</p>
-          </div>
-          <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-            <p className="text-2xl font-black text-green-700">{completed.length}</p>
-            <p className="text-[11px] font-bold uppercase tracking-wide text-green-600">Concluídas</p>
-          </div>
-        </div>
-      </div>
+  return <div className="mx-auto w-full max-w-[1480px]">
+    <div className="fieldwork-page-intro"><div><p className="fieldwork-page-kicker">04 / Cadência comercial</p><h1 className="fieldwork-page-title">O ritmo acontece<br /><em className="not-italic text-[var(--brand-primary)]">entre contactos.</em></h1><p className="fieldwork-page-copy">Organize a próxima ação, proteja os follow-ups e dê à equipa uma fila de execução que não depende de memória.</p></div><div className="fieldwork-page-stamp"><span>HOJE</span><strong>{todayTasks.length} movimento(s)</strong><small>{overdue.length ? `${overdue.length} atrasado(s) pedem atenção` : 'Nenhum atraso crítico'}</small></div></div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-6 items-start">
-        <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 xl:sticky xl:top-6">
-          <h3 className="text-lg font-bold text-gray-900">Nova tarefa</h3>
-          <p className="text-xs text-gray-500 mt-1 mb-5">Agende a próxima ação de um lead ou uma atividade interna.</p>
-          <form action={createTaskAction} className="space-y-4">
-            <div>
-              <label htmlFor="task-title" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Título</label>
-              <input id="task-title" name="title" required minLength={2} maxLength={160} placeholder="Ex.: Ligar para confirmar proposta" className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label htmlFor="task-lead" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Lead relacionado</label>
-              <select id="task-lead" name="leadId" className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Tarefa interna / sem lead</option>
-                {leadsData.leads.map((lead) => (
-                  <option key={lead.id} value={lead.id}>{lead.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="task-due" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Prazo</label>
-                <input id="task-due" name="dueAt" type="datetime-local" required className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label htmlFor="task-priority" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Prioridade</label>
-                <select id="task-priority" name="priority" defaultValue="medium" className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="high">Alta</option>
-                  <option value="medium">Média</option>
-                  <option value="low">Baixa</option>
-                </select>
-              </div>
-            </div>
-            {leadsData.userRole === 'admin' && (
-              <div>
-                <label htmlFor="task-assignee" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Responsável</label>
-                <select id="task-assignee" name="assignedTo" className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="">Atribuir a mim</option>
-                  {leadsData.members.map((member) => (
-                    <option key={member.id} value={member.id}>{member.full_name || 'Sem nome'}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-            <div>
-              <label htmlFor="task-description" className="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Notas</label>
-              <textarea id="task-description" name="description" rows={3} maxLength={1000} placeholder="Contexto para executar esta tarefa..." className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm resize-y focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors shadow-sm">Criar tarefa</button>
-          </form>
-        </section>
-
-        <section className="space-y-5">
-          <TaskGroup title="Atrasadas" tasks={overdue} tone="red" emptyLabel="Nenhuma tarefa atrasada. Excelente trabalho." />
-          <TaskGroup title="Para hoje" tasks={todayTasks} tone="blue" emptyLabel="Não há tarefas para hoje." />
-          <TaskGroup title="Próximas" tasks={upcoming} tone="gray" emptyLabel="Não há tarefas futuras." />
-          <TaskGroup title="Concluídas recentemente" tasks={completed} tone="green" emptyLabel="Ainda não há tarefas concluídas." completed />
-        </section>
-      </div>
+    <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="fieldwork-metric" style={{ '--metric-color': 'var(--brand-primary)' } as React.CSSProperties}><span className="fieldwork-metric-label">Fila total</span><div className="fieldwork-metric-value">{pending.length}</div><p className="fieldwork-metric-note">Ações em aberto</p></div>
+      <div className="fieldwork-metric" style={{ '--metric-color': 'var(--coral)' } as React.CSSProperties}><span className="fieldwork-metric-label">Atrasadas</span><div className="fieldwork-metric-value">{overdue.length}</div><p className="fieldwork-metric-note text-[var(--coral)]">Requerem decisão</p></div>
+      <div className="fieldwork-metric" style={{ '--metric-color': 'var(--moss)' } as React.CSSProperties}><span className="fieldwork-metric-label">Concluídas</span><div className="fieldwork-metric-value">{completed.length}</div><p className="fieldwork-metric-note text-[var(--moss)]">Últimas atividades</p></div>
+      <div className="fieldwork-metric" style={{ '--metric-color': 'var(--lilac)' } as React.CSSProperties}><span className="fieldwork-metric-label">Alta prioridade</span><div className="fieldwork-metric-value">{pending.filter((task) => task.priority === 'high').length}</div><p className="fieldwork-metric-note">Ações de impacto</p></div>
     </div>
-  )
+
+    <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
+      <section className="space-y-4"><TaskGroup title="Atrasadas — recuperar contexto" tasks={overdue} tone="red" emptyLabel="Nenhuma tarefa atrasada. O ritmo está protegido." /><TaskGroup title="Para hoje — foco da equipa" tasks={todayTasks} tone="blue" emptyLabel="Não há tarefas para hoje. Aproveite para preparar a próxima cadência." /><TaskGroup title="Próximas — manter o compromisso" tasks={upcoming} tone="gray" emptyLabel="Não há tarefas futuras." /><TaskGroup title="Concluídas recentemente" tasks={completed} tone="green" emptyLabel="Ainda não há tarefas concluídas." completed /></section>
+      <aside className="fieldwork-panel p-6 xl:sticky xl:top-5"><div className="mb-6 flex items-start justify-between"><div><p className="fieldwork-page-kicker">Nova atividade</p><h2 className="text-xl font-black tracking-[-.04em] text-[var(--ink)]">Definir próximo movimento.</h2></div><Plus size={18} className="text-[var(--brand-primary)]" /></div><form action={createTaskAction} className="space-y-4"><div><label htmlFor="task-title" className="fieldwork-form-label">Título da ação</label><input id="task-title" name="title" required minLength={2} maxLength={160} placeholder="Ex.: Confirmar proposta" className="fieldwork-form-input" /></div><div><label htmlFor="task-lead" className="fieldwork-form-label">Contexto relacionado</label><select id="task-lead" name="leadId" className="fieldwork-form-input"><option value="">Tarefa interna / sem lead</option>{leadsData.leads.map((lead) => <option key={lead.id} value={lead.id}>{lead.name}</option>)}</select></div><div className="grid grid-cols-2 gap-3"><div><label htmlFor="task-due" className="fieldwork-form-label">Quando</label><input id="task-due" name="dueAt" type="datetime-local" required className="fieldwork-form-input" /></div><div><label htmlFor="task-priority" className="fieldwork-form-label">Prioridade</label><select id="task-priority" name="priority" defaultValue="medium" className="fieldwork-form-input"><option value="high">Alta</option><option value="medium">Média</option><option value="low">Baixa</option></select></div></div>{leadsData.userRole === 'admin' && <div><label htmlFor="task-assignee" className="fieldwork-form-label">Responsável</label><select id="task-assignee" name="assignedTo" className="fieldwork-form-input"><option value="">Atribuir a mim</option>{leadsData.members.map((member) => <option key={member.id} value={member.id}>{member.full_name || 'Sem nome'}</option>)}</select></div>}<div><label htmlFor="task-description" className="fieldwork-form-label">Nota de execução</label><textarea id="task-description" name="description" rows={4} maxLength={1000} placeholder="O que a pessoa precisa saber para executar?" className="fieldwork-form-input resize-y" /></div><button type="submit" className="fieldwork-primary-button w-full justify-center"><Plus size={14} /> Criar atividade</button></form><div className="mt-6 flex items-start gap-2 border-t border-[var(--line)] pt-5 text-[11px] leading-5 text-[var(--ink-soft)]"><Target size={14} className="mt-0.5 shrink-0 text-[var(--brand-primary)]" /> Uma atividade bem descrita reduz o tempo entre intenção e execução.</div></aside>
+    </div>
+  </div>
 }
 
 function TaskGroup({ title, tasks, tone, emptyLabel, completed = false }: { title: string; tasks: Task[]; tone: 'red' | 'blue' | 'gray' | 'green'; emptyLabel: string; completed?: boolean }) {
-  const headingClasses = {
-    red: 'text-red-700',
-    blue: 'text-blue-700',
-    gray: 'text-gray-700',
-    green: 'text-green-700',
-  } as const
-
-  return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <h3 className={`font-bold ${headingClasses[tone]}`}>{title}</h3>
-        <span className="text-xs font-bold text-gray-400">{tasks.length}</span>
-      </div>
-      {tasks.length === 0 ? (
-        <p className="px-5 py-8 text-sm text-gray-400">{emptyLabel}</p>
-      ) : (
-        <div className="divide-y divide-gray-100">
-          {tasks.map(task => (
-            <article key={task.id} className="px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <h4 className={`font-semibold ${completed ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{task.title}</h4>
-                  <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${priorityClasses[task.priority]}`}>{priorityLabels[task.priority]}</span>
-                </div>
-                <p className="text-xs text-gray-500">
-                  {task.lead?.name ? `Lead: ${task.lead.name} · ` : ''}
-                  {completed ? `Concluída em ${task.completed_at ? formatDate(task.completed_at) : 'data não disponível'}` : `Prazo: ${formatDate(task.due_at)}`}
-                </p>
-                {task.description && <p className="text-xs text-gray-400 mt-1 line-clamp-2">{task.description}</p>}
-              </div>
-              {!completed && (
-                <form action={completeTaskAction.bind(null, task.id)}>
-                  <button type="submit" className="shrink-0 px-3 py-2 bg-green-50 text-green-700 border border-green-200 rounded-lg text-xs font-bold hover:bg-green-100 transition-colors">Concluir</button>
-                </form>
-              )}
-            </article>
-          ))}
-        </div>
-      )}
-    </div>
-  )
+  const toneClass = { red: 'fieldwork-task-group-red', blue: 'fieldwork-task-group-blue', gray: 'fieldwork-task-group-gray', green: 'fieldwork-task-group-green' }[tone]
+  return <section className={`fieldwork-task-group ${toneClass}`}><header><div className="flex items-center gap-2">{tone === 'red' ? <Flame size={15} /> : tone === 'blue' ? <Clock3 size={15} /> : tone === 'green' ? <CheckCircle2 size={15} /> : <CalendarClock size={15} />}<h2>{title}</h2></div><span>{tasks.length}</span></header>{tasks.length === 0 ? <p className="fieldwork-task-empty">{emptyLabel}</p> : <div>{tasks.map((task) => <article key={task.id} className="fieldwork-task-row"><div className="fieldwork-task-check">{completed ? <CheckCircle2 size={16} /> : <span />}</div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><h3 className={completed ? 'is-completed' : ''}>{task.title}</h3><span className={`fieldwork-task-priority ${priorityClasses[task.priority]}`}>{priorityLabels[task.priority]}</span></div><p>{task.lead?.name ? <Link href={`/dashboard/leads/${task.lead.id}`} className="fieldwork-task-lead">{task.lead.name}</Link> : 'Atividade interna'} · {completed ? `Concluída em ${task.completed_at ? formatDate(task.completed_at) : 'data não disponível'}` : `Prazo: ${formatDate(task.due_at)}`}</p>{task.description && <small>{task.description}</small>}</div>{!completed && <form action={completeTaskAction.bind(null, task.id)}><button type="submit" className="fieldwork-task-complete">Concluir</button></form>}<ArrowUpRight size={14} className="hidden shrink-0 text-[var(--ink-faint)] sm:block" /></article>)}</div>}</section>
 }

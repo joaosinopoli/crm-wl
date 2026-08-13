@@ -28,3 +28,20 @@
 - [ ] Criar UI de múltiplos pipelines e permissões por capability.
 - [ ] Convergir agenda, tarefas e notas numa timeline unificada.
 - [ ] Adicionar convites por e-mail, auditoria, billing por plano e integrações oficiais.
+
+## Reestruturação completa do frontend SaaS
+
+- [ ] Definir a nova direção visual, tokens, componentes e arquitetura do shell.
+- [ ] Substituir a sidebar e o header por uma experiência SaaS nova, responsiva e white-label.
+- [ ] Redesenhar dashboard, funil, leads, tarefas, agenda e relatórios com nova composição visual.
+- [ ] Redesenhar onboarding, equipa, configurações, login, signup e estados de conta.
+- [ ] Validar visualmente desktop/mobile, acessibilidade, rotas e build.
+- [ ] Publicar a nova experiência na `main` e atualizar documentação visual.
+
+## Plataforma de leads e conversas
+
+- [ ] Mapear os fluxos de inbox, lead, pipeline, timeline, atividade e automação.
+- [ ] Criar o shell operacional novo com navegação por contexto e comando rápido.
+- [ ] Implementar inbox de conversas, detalhe do lead e timeline unificada.
+- [ ] Redesenhar pipeline, cadências, tarefas, relatórios e segmentação.
+- [ ] Validar estados vazios, loading, erros, permissões e experiência mobile.

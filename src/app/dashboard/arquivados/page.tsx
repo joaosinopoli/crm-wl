@@ -41,27 +41,23 @@ export default async function ArquivadosPage({
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Histórico de Vendas (Arquivados)</h2>
-        <p className="text-sm text-gray-500 mt-1">Consulte e edite negócios finalizados, ou reabra clientes de volta para o Kanban.</p>
-      </div>
+    <div className="mx-auto w-full max-w-[1480px]"><div className="fieldwork-page-intro"><div><p className="fieldwork-page-kicker">08 / Memória comercial</p><h1 className="fieldwork-page-title">O que fechou.<br /><em className="not-italic text-[var(--brand-primary)]">E o que ensinou.</em></h1><p className="fieldwork-page-copy">Consulte negócios concluídos, reveja padrões e reabra uma relação quando o contexto mudar.</p></div></div>
 
-      <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6">
+      <div className="fieldwork-filter-bar fieldwork-panel mb-5">
         <form method="GET" action="/dashboard/arquivados" className="flex flex-col md:flex-row gap-4 items-end">
           <div className="flex-1 w-full">
-            <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Buscar por Nome</label>
+            <label className="fieldwork-form-label">Nome do contacto</label>
             <input 
               name="search" type="text" defaultValue={search} placeholder="Ex: Carlos..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="fieldwork-form-input"
             />
           </div>
           
           <div className="w-full md:w-48">
-            <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Status</label>
+            <label className="fieldwork-form-label">Resultado</label>
             <select 
               name="status" defaultValue={status}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="fieldwork-form-input"
             >
               <option value="all">Todos os Status</option>
               <option value="won">🏆 Ganhos</option>
@@ -70,27 +66,27 @@ export default async function ArquivadosPage({
           </div>
 
           <div className="w-full md:w-40">
-            <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">De (Data)</label>
-            <input name="dateFrom" type="date" defaultValue={dateFrom} className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="fieldwork-form-label">De</label>
+            <input name="dateFrom" type="date" defaultValue={dateFrom} className="fieldwork-form-input" />
           </div>
 
           <div className="w-full md:w-40">
-            <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Até (Data)</label>
-            <input name="dateTo" type="date" defaultValue={dateTo} className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="fieldwork-form-label">Até</label>
+            <input name="dateTo" type="date" defaultValue={dateTo} className="fieldwork-form-input" />
           </div>
 
           <div className="flex gap-2 w-full md:w-auto">
-            <a href="/dashboard/arquivados" className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center">Limpar</a>
-            <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center">Filtrar</button>
+            <a href="/dashboard/arquivados" className="fieldwork-secondary-button">Limpar</a>
+            <button type="submit" className="fieldwork-primary-button">Filtrar</button>
           </div>
         </form>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col">
+      <div className="fieldwork-leads-table fieldwork-panel overflow-hidden">
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <tr>
                 <th className="py-4 px-6">Cliente</th>
                 <th className="py-4 px-6">Status</th>
                 <th className="py-4 px-6">Valor da Venda</th>
@@ -115,11 +111,11 @@ export default async function ArquivadosPage({
                       <td className="py-4 px-6">
                         {isWon ? (
                           <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-700 border border-green-200">
-                            🏆 Ganho
+                            Ganho
                           </span>
                         ) : (
                           <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-red-100 text-red-700 border border-red-200">
-                            ❌ Perdido
+                            Perdido
                           </span>
                         )}
                       </td>
@@ -137,7 +133,7 @@ export default async function ArquivadosPage({
                         </span>
                       </td>
                       <td className="py-4 px-6">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <span className="fieldwork-table-owner">
                           {profileData?.full_name || 'Não atribuído'}
                         </span>
                       </td>

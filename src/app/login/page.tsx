@@ -1,72 +1,9 @@
 import Link from 'next/link'
+import { ArrowLeft, ArrowRight, KeyRound } from 'lucide-react'
 import { login } from '@/src/app/actions/auth'
 import GoogleLoginButton from '@/src/components/GoogleLoginButton'
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-4 font-sans selection:bg-blue-600 selection:text-white">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-        
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-black text-gray-900 mb-2">Bem-vindo de volta!</h1>
-          <p className="text-sm text-gray-500 font-medium">Acesse sua conta para continuar gerenciando suas vendas.</p>
-        </div>
-
-        {/* Botão do Google no topo */}
-        <GoogleLoginButton />
-
-        {/* Divisor Visual */}
-        <div className="flex items-center gap-4 my-6">
-          <div className="flex-1 h-px bg-gray-200"></div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ou</span>
-          <div className="flex-1 h-px bg-gray-200"></div>
-        </div>
-
-        {/* Formulário Tradicional */}
-        <form action={login} className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
-            <input 
-              name="email" 
-              type="email" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="seu@email.com" 
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Senha</label>
-            <input 
-              name="password" 
-              type="password" 
-              required 
-              className="w-full px-4 py-3.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow" 
-              placeholder="••••••••" 
-            />
-          </div>
-          
-          {searchParams?.error && (
-            <div className="text-red-500 text-xs font-medium bg-red-50 p-3 rounded-xl border border-red-100">
-              {searchParams.error}
-            </div>
-          )}
-          
-          <button 
-            type="submit" 
-            className="w-full bg-gray-900 text-white py-3.5 rounded-xl text-sm font-bold hover:bg-black transition-colors shadow-sm mt-2"
-          >
-            Entrar com E-mail
-          </button>
-        </form>
-
-        <p className="text-center text-sm text-gray-600 font-medium mt-8">
-          Ainda não tem conta?{' '}
-          <Link href="/signup" className="text-blue-600 font-bold hover:underline decoration-2 underline-offset-4">
-            Criar conta grátis
-          </Link>
-        </p>
-      </div>
-    </div>
-  )
+// Fieldwork OS: autenticação como uma porta de entrada calma, com hierarquia e sem ruído.
+export default function LoginPage({ searchParams }: { searchParams: { error?: string; message?: string } }) {
+  return <div className="fieldwork-auth-shell"><div className="fieldwork-auth-aside"><Link href="/" className="fieldwork-wordmark"><span className="fieldwork-wordmark-mark">ƒ</span><span>fieldwork<span className="text-[var(--coral)]">.</span></span></Link><div><p className="fieldwork-page-kicker">A operação continua</p><h1>Volte para<br /><em>o ritmo.</em></h1><p>Os seus leads, conversas e próximos movimentos esperam no mesmo lugar.</p></div><span className="fieldwork-auth-aside-note">FIELDWORK OS / 2026</span></div><main className="fieldwork-auth-main"><div className="fieldwork-auth-card"><Link href="/" className="fieldwork-auth-back"><ArrowLeft size={14} /> Voltar ao início</Link><div className="mb-8 mt-10"><span className="fieldwork-auth-icon"><KeyRound size={18} /></span><p className="fieldwork-page-kicker mt-7">Acesso ao workspace</p><h2>Bem-vindo de volta.</h2><p>Entre para continuar a transformar contexto em próximo passo.</p></div><GoogleLoginButton /><div className="fieldwork-auth-divider"><span>ou entrar com e-mail</span></div><form action={login} className="space-y-4"><div><label className="fieldwork-form-label" htmlFor="login-email">E-mail</label><input id="login-email" name="email" type="email" required className="fieldwork-form-input" placeholder="voce@empresa.com" /></div><div><label className="fieldwork-form-label" htmlFor="login-password">Senha</label><input id="login-password" name="password" type="password" required className="fieldwork-form-input" placeholder="A sua senha" /></div>{(searchParams?.error || searchParams?.message) && <div className="fieldwork-auth-error">{searchParams.error || searchParams.message}</div>}<button type="submit" className="fieldwork-primary-button w-full justify-center">Entrar no workspace <ArrowRight size={15} /></button></form><p className="fieldwork-auth-switch">Ainda não tem workspace? <Link href="/signup">Criar gratuitamente</Link></p></div></main></div>
 }

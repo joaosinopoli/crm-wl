@@ -20,13 +20,8 @@ export default async function AgendaPage() {
   const { leads } = await getAllLeadsData()
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Agenda de Compromissos</h2>
-        <p className="text-sm text-gray-500 mt-1">Gerencie suas reuniões, ligações e visitas visualmente.</p>
-      </div>
+    <div className="mx-auto w-full max-w-[1480px]"><div className="fieldwork-page-intro"><div><p className="fieldwork-page-kicker">04 / Ritmo e compromissos</p><h1 className="fieldwork-page-title">O próximo passo<br /><em className="not-italic text-[var(--brand-primary)]">tem hora marcada.</em></h1><p className="fieldwork-page-copy">Reuniões, ligações e visitas ligadas ao contexto certo para a equipa saber o que acontece a seguir.</p></div></div>
 
-      <CalendarAgenda appointments={appointments as Appointment[]} leads={(leads || []) as Lead[]} />
-    </div>
+      <CalendarAgenda appointments={appointments as Appointment[]} leads={(leads || []) as Lead[]} /></div>
   )
 }

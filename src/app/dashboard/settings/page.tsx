@@ -17,7 +17,7 @@ export default async function SettingsPage() {
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'owner') {
     redirect('/dashboard')
   }
 
@@ -39,16 +39,19 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="h-full flex flex-col max-w-4xl mx-auto w-full pb-12">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Configurações do workspace</h2>
-        <p className="text-sm text-gray-500 mt-1">Configure a identidade white-label, o vocabulário do seu negócio, as etapas do funil e os campos personalizados.</p>
+    <div className="fieldwork-settings-page mx-auto w-full max-w-5xl pb-12">
+      <div className="fieldwork-page-intro">
+        <div>
+          <p className="fieldwork-page-kicker">10 / Controlo do sistema</p>
+          <h1 className="fieldwork-page-title">O workspace<br /><em className="not-italic text-[var(--brand-primary)]">fala a sua língua.</em></h1>
+          <p className="fieldwork-page-copy">Configure identidade white-label, vocabulário, etapas e campos para a sua operação — sem duplicar o produto.</p>
+        </div>
       </div>
 
       <div className="space-y-8">
         {/* Card de Informações da Empresa */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Dados do Workspace</h3>
+        <div className="fieldwork-settings-card">
+          <p className="fieldwork-page-kicker">Contexto da conta</p><h3>Dados do workspace</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase">Nome da Empresa</label>
