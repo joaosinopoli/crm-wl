@@ -19,7 +19,7 @@
 - [x] Definir entidades de workspace, branding, nicho, papéis, permissões e configurações flexíveis.
 - [ ] Remodelar onboarding, convites, recuperação de conta e experiência de conta ponta a ponta.
 - [x] Implementar a fundação de CRM multi-nicho com pipelines, campos, contactos, atividades e relatórios compatíveis.
-- [x] Adicionar exportação de leads, extensibilidade inicial e documentação operacional.
+- [x] Adicionar importação/exportação de leads, extensibilidade inicial e documentação operacional.
 - [x] Validar lint/build, preservar RLS na migration e publicar a fundação na `main`.
 
 ### Próxima fase SaaS

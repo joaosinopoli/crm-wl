@@ -41,6 +41,8 @@ O módulo de tarefas adiciona a tabela `tasks`, índices por empresa/responsáve
 
 A remodelação SaaS white-label adiciona `supabase/migrations/20260814090000_white_label_workspace_foundation.sql`. Ela cria configurações por workspace, memberships com papéis granulares, pipelines múltiplos, branding, vocabulário de negócio, moeda, timezone e triggers de bootstrap para empresas e perfis novos. Aplique primeiro a migration de tarefas e depois a migration white-label.
 
+A área de leads agora inclui importação CSV com limite de tamanho/linhas, validação de cabeçalho, deduplicação por e-mail ou telefone, campos extras e atribuição ao utilizador que importa. A exportação CSV mantém o escopo do tenant e pode ser usada para portabilidade dos dados.
+
 ## Scripts
 
 | Comando | Objetivo |
@@ -60,7 +62,7 @@ As operações de escrita devem validar sessão, membership, papel e `company_id
 
 ## Próximas evoluções recomendadas
 
-A próxima etapa deve versionar o schema base e adicionar testes automatizados para autorização cross-tenant. Depois disso, o produto pode evoluir com timeline unificada de atividades, etiquetas, pesquisa global, importação de leads com deduplicação, pipelines múltiplos na UI, billing por plano, auditoria, webhooks e integrações oficiais de e-mail/WhatsApp.
+A próxima etapa deve versionar o schema base e adicionar testes automatizados para autorização cross-tenant. Depois disso, o produto pode evoluir com timeline unificada de atividades, etiquetas, pesquisa global, pipelines múltiplos na UI, billing por plano, auditoria, webhooks e integrações oficiais de e-mail/WhatsApp.
 
 ## Website do relatório de entrega
 

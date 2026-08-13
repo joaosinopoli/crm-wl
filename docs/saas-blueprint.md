@@ -41,11 +41,11 @@ Toda leitura e mutação deve obter o tenant a partir da sessão atual, nunca a 
 
 ## Estado implementado nesta ronda
 
-Esta remodelação já adiciona a migration `20260814090000_white_label_workspace_foundation.sql`, a consulta e atualização de workspace, branding dinâmico na navbar, labels configuráveis no dashboard, membership-based auth context, papéis `manager` e `viewer`, além do painel administrativo de identidade e contexto do negócio.
+Esta remodelação já adiciona a migration `20260814090000_white_label_workspace_foundation.sql`, a consulta e atualização de workspace, branding dinâmico na navbar, labels configuráveis no dashboard, membership-based auth context, papéis `manager` e `viewer`, painel administrativo de identidade e contexto do negócio, além de importação/exportação CSV com deduplicação e escopo de tenant.
 
 ## Próximas fases
 
-O próximo incremento recomendado é convergir agenda e tarefas numa entidade de atividades, adicionar importação/exportação com validação de duplicados, criar pipelines múltiplos na UI e acrescentar uma camada de permissões por capability. Em seguida, devem ser implementados convites por e-mail, billing por plano, auditoria de alterações, integrações e testes automatizados cross-tenant.
+O próximo incremento recomendado é convergir agenda e tarefas numa entidade de atividades, criar pipelines múltiplos na UI e acrescentar uma camada de permissões por capability. Em seguida, devem ser implementados convites por e-mail, billing por plano, auditoria de alterações, integrações e testes automatizados cross-tenant.
 
 ## Aplicação da migration
 

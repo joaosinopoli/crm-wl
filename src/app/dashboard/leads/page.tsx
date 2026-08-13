@@ -1,4 +1,5 @@
 import { getAllLeadsData } from '@/src/app/actions/kanban'
+import Link from 'next/link'
 import EditLeadModal from '@/src/components/EditLeadModal'
 import type { Lead } from '@/src/types/crm'
 
@@ -49,7 +50,7 @@ export default async function LeadsPage({
           <h2 className="text-2xl font-bold text-gray-900">Todos os Leads (Em Aberto)</h2>
           <p className="text-sm text-gray-500 mt-1">Gerencie sua base de contatos ativos e filtre por interesses específicos.</p>
         </div>
-        <a href="/dashboard/leads/export" className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">Exportar CSV</a>
+        <div className="flex flex-wrap gap-2"><Link href="/dashboard/leads/importar" className="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-bold text-blue-700 shadow-sm transition hover:bg-blue-100">Importar CSV</Link><a href="/dashboard/leads/export" className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">Exportar CSV</a></div>
       </div>
 
       {/* Barra de Filtros */}
