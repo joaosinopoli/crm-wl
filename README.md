@@ -63,3 +63,5 @@ A próxima etapa deve versionar o schema base e adicionar testes automatizados p
 ## Website do relatório de entrega
 
 Foi acrescentado o website partilhável do relatório em `report-site/`. Para executá-lo localmente, consulte [`report-site/README.md`](./report-site/README.md). A versão visual está disponível no preview do projeto Manus e a branch de código correspondente é `feature/report-site`.
+
+Para publicar o website separadamente, configure `report-site` como **Root Directory** no projeto de hosting. A aplicação CRM continua a usar a raiz do repositório; o `tsconfig.json` e o ESLint raiz ignoram o subsite para evitar que os dois toolchains sejam misturados.
