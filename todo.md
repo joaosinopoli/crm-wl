@@ -8,7 +8,7 @@
 
 ## Integração final na main
 
-- [ ] Verificar o estado remoto de `main` e `feature/report-site`.
-- [ ] Integrar a implementação validada na `main` sem perder histórico.
-- [ ] Executar lint/build diretamente na `main` atualizada.
-- [ ] Confirmar que a plataforma final aponta para a `main` com as novas rotas.
+- [x] Verificar o estado remoto de `main` e `feature/report-site`.
+- [x] Integrar a implementação validada na `main` sem perder histórico.
+- [x] Executar lint/build diretamente na `main` atualizada.
+- [x] Confirmar que a plataforma final aponta para a `main` com as novas rotas.
