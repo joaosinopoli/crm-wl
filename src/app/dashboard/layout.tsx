@@ -43,12 +43,12 @@ export default async function DashboardLayout({
   return (
     <div className="fieldwork-shell" style={{ '--brand-primary': primaryColor } as React.CSSProperties}>
       <DashboardNav companyName={workspace?.portal_name || companyName} userRole={userRole} brandPrimaryColor={workspace?.brand_primary_color} leadLabel={workspace?.customer_label_plural || 'Clientes ativos'} pipelineLabel={workspace?.pipeline_label || 'Funil de vendas'}>
-        <div className="mt-4 border-t border-gray-100 pt-3">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">{userName.charAt(0).toUpperCase()}</div>
-            <div className="flex min-w-0 flex-col overflow-hidden"><span className="truncate text-sm font-medium text-gray-900">{userName}</span><span className="truncate text-xs capitalize text-gray-500">{userRole === 'owner' ? 'Owner' : userRole === 'admin' ? 'Administrador' : userRole === 'manager' ? 'Gestor' : userRole === 'viewer' ? 'Visualizador' : 'Vendedor'}</span></div>
+        <div className="fieldwork-rail-account">
+          <div className="fieldwork-account-row">
+            <div className="fieldwork-account-avatar">{userName.charAt(0).toUpperCase()}</div>
+            <div className="min-w-0"><span className="fieldwork-account-name">{userName}</span><span className="fieldwork-account-role">{userRole === 'owner' ? 'Owner' : userRole === 'admin' ? 'Administrador' : userRole === 'manager' ? 'Gestor' : userRole === 'viewer' ? 'Visualizador' : 'Vendedor'}</span></div>
           </div>
-          <form action={logout} className="mt-1"><button type="submit" className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50">Sair do sistema</button></form>
+          <form action={logout}><button type="submit" className="fieldwork-logout">Sair do sistema</button></form>
         </div>
       </DashboardNav>
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">

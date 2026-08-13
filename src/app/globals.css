@@ -24,8 +24,8 @@ button, a, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand-primary) 34%, transparent); outline-offset: 3px; }
 
-.fieldwork-shell { display: flex; min-height: 100vh; background: var(--paper); }
-.fieldwork-rail { width: 292px; min-height: 100vh; flex-direction: column; flex-shrink: 0; border-right: 1px solid var(--line); background: rgba(255,255,255,.82); padding: 24px 16px 16px; }
+.fieldwork-shell { display: flex; height: 100vh; min-height: 100vh; overflow: hidden; background: var(--paper); }
+.fieldwork-rail { width: 304px; height: 100vh; min-height: 100vh; flex-direction: column; flex-shrink: 0; overflow: hidden; border-right: 1px solid var(--line); background: rgba(255,255,255,.92); padding: 24px 16px 16px; }
 .fieldwork-brand { display: flex; align-items: center; gap: 11px; min-height: 52px; padding: 0 10px; }
 .fieldwork-mark { display: inline-flex; flex-direction: column; justify-content: center; gap: 3px; width: 33px; height: 33px; padding: 7px; border-radius: 9px; background: var(--mark-color, var(--brand-primary)); box-shadow: 0 6px 14px color-mix(in srgb, var(--mark-color, var(--brand-primary)) 22%, transparent); }
 .fieldwork-mark i { display: block; height: 3px; border-radius: 2px; background: white; }
@@ -40,21 +40,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-nav-label { display: flex; align-items: center; gap: 8px; padding: 0 11px 7px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .fieldwork-nav-label span { color: var(--brand-primary); }
 .fieldwork-nav-label i { height: 1px; flex: 1; background: var(--line); }
-.fieldwork-nav-item { position: relative; display: flex; align-items: center; gap: 9px; min-height: 52px; margin: 2px 0; padding: 7px 10px; border: 1px solid transparent; border-radius: 9px; color: var(--ink-soft); text-decoration: none; transition: transform .18s var(--ease-field), background .18s var(--ease-field), color .18s var(--ease-field), border-color .18s var(--ease-field); }
+.fieldwork-nav-item { position: relative; display: flex; align-items: center; gap: 10px; min-height: 60px; margin: 3px 0; padding: 9px 10px; border: 1px solid transparent; border-radius: 9px; color: var(--ink-soft); text-decoration: none; transition: transform .18s var(--ease-field), background .18s var(--ease-field), color .18s var(--ease-field), border-color .18s var(--ease-field); }
 .fieldwork-nav-item:hover { transform: translateX(3px); border-color: var(--line); background: var(--paper); color: var(--ink); }
 .fieldwork-nav-item.is-active { border-color: color-mix(in srgb, var(--nav-brand, var(--brand-primary)) 18%, var(--line)); background: color-mix(in srgb, var(--nav-brand, var(--brand-primary)) 7%, white); color: var(--nav-brand, var(--brand-primary)); box-shadow: 0 6px 18px rgba(21,32,43,.035); }
 .fieldwork-nav-item.is-active::before { position: absolute; left: -17px; width: 3px; height: 27px; border-radius: 0 3px 3px 0; background: var(--nav-brand, var(--brand-primary)); content: ""; }
-.fieldwork-nav-index { width: 17px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; }
+.fieldwork-nav-index { width: 21px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 800; }
 .fieldwork-nav-item.is-active .fieldwork-nav-index { color: var(--nav-brand, var(--brand-primary)); }
-.fieldwork-nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 29px; height: 29px; border-radius: 7px; background: var(--paper-deep); color: var(--ink-soft); }
+.fieldwork-nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 33px; height: 33px; border-radius: 8px; background: var(--paper-deep); color: var(--ink-soft); }
 .fieldwork-nav-item.is-active .fieldwork-nav-icon { background: var(--nav-brand, var(--brand-primary)); color: white; }
-.fieldwork-signal { border-radius: 4px; background: color-mix(in srgb, var(--brand-primary) 11%, white); padding: 3px 5px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-signal { border-radius: 4px; background: color-mix(in srgb, var(--brand-primary) 11%, white); padding: 4px 6px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; text-transform: uppercase; }
 .fieldwork-dot-hot { background: var(--coral); box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral) 13%, transparent); }
 .fieldwork-rail-bottom { margin-top: 10px; }
+.fieldwork-rail-account { margin: 14px 4px 0; border-top: 1px solid var(--line); padding-top: 13px; }
+.fieldwork-account-row { display: flex; align-items: center; gap: 10px; padding: 5px 8px; }
+.fieldwork-account-avatar { display: inline-flex; width: 34px; height: 34px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9px; background: var(--brand-primary); color: white; font-size: 13px; font-weight: 950; }
+.fieldwork-account-name { display: block; overflow: hidden; color: var(--ink); font-size: 12px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-account-role { display: block; margin-top: 2px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-logout { width: 100%; margin-top: 6px; border: 0; border-radius: 7px; background: transparent; padding: 9px 8px; color: var(--coral); text-align: left; font-size: 11px; font-weight: 850; }
+.fieldwork-logout:hover { background: color-mix(in srgb, var(--coral) 8%, white); }
 .fieldwork-next { display: flex; flex-direction: column; gap: 4px; margin: 0 4px 13px; padding: 13px; border-radius: 10px; background: var(--ink); color: white; }
 .fieldwork-next .fieldwork-kicker { color: #93a1aa; }
-.fieldwork-next strong { font-size: 12px; }
-.fieldwork-next span:last-child { color: #a8b3b8; font-size: 10px; line-height: 1.45; }
+.fieldwork-next strong { font-size: 13px; }
+.fieldwork-next span:last-child { color: #a8b3b8; font-size: 11px; line-height: 1.45; }
 .fieldwork-topbar { display: flex; min-height: 88px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); background: rgba(247,247,243,.82); padding: 15px clamp(18px, 4vw, 56px); backdrop-filter: blur(18px); }
 .fieldwork-breadcrumb { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .fieldwork-breadcrumb b { color: var(--line); }
@@ -64,7 +71,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-search-link kbd { margin-left: auto; padding: 2px 4px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; }
 .fieldwork-icon-button { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 37px; height: 37px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink-soft); }
 .fieldwork-icon-button i { position: absolute; top: 8px; right: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
-.fieldwork-main { flex: 1; overflow: auto; padding: clamp(20px, 3.5vw, 54px) clamp(18px, 4vw, 56px) 70px; background: radial-gradient(circle at 90% 0%, rgba(49,88,212,.04), transparent 32%), var(--paper); }
+.fieldwork-main { min-height: 0; flex: 1; overflow: auto; padding: clamp(32px, 4vw, 64px) clamp(22px, 4vw, 64px) 78px; background: radial-gradient(circle at 90% 0%, rgba(49,88,212,.04), transparent 32%), var(--paper); }
 .fieldwork-mobile-trigger { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); }
 .fieldwork-mobile-sheet { position: absolute; top: 50px; left: 0; z-index: 50; width: min(340px, calc(100vw - 36px)); max-height: calc(100vh - 80px); overflow: auto; padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 24px 60px rgba(21,32,43,.18); }
 .fieldwork-nav-group.is-compact { margin-top: 17px; }
@@ -74,7 +81,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-page-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 30px; }
 .fieldwork-page-kicker { margin: 0 0 7px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
 .fieldwork-page-title { margin: 0; color: var(--ink); font-family: Georgia, Cambria, serif; font-size: clamp(30px, 4.2vw, 54px); font-weight: 700; letter-spacing: -.055em; line-height: .98; }
-.fieldwork-page-copy { max-width: 620px; margin: 11px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.7; }
+.fieldwork-page-copy { max-width: 620px; margin: 11px 0 0; color: var(--ink-soft); font-size: 14px; line-height: 1.72; }
 .fieldwork-panel { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-paper); }
 .fieldwork-metric { position: relative; overflow: hidden; padding: 20px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); box-shadow: var(--shadow-paper); }
 .fieldwork-metric::before { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--metric-color, var(--brand-primary)); content: ""; }
@@ -101,13 +108,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-thread.is-selected { box-shadow: inset 3px 0 0 var(--brand-primary); }
 .fieldwork-thread-avatar { display: inline-flex; width: 34px; height: 34px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9px; background: var(--paper-deep); color: var(--ink-soft); font-family: Georgia, Cambria, serif; font-size: 16px; font-weight: 700; }
 .fieldwork-thread-avatar.is-large { width: 44px; height: 44px; background: color-mix(in srgb, var(--brand-primary) 12%, white); color: var(--brand-primary); font-size: 20px; }
-.fieldwork-thread-time { align-self: flex-start; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.fieldwork-thread-time { align-self: flex-start; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; }
+.fieldwork-thread strong { color: var(--ink); font-size: 13px; font-weight: 900; }
+.fieldwork-thread p { margin-top: 3px; color: var(--ink-soft); font-size: 12px; line-height: 1.45; }
+.fieldwork-thread small { color: var(--ink-faint); font-size: 10px; }
 .fieldwork-conversation { display: flex; flex-direction: column; }
 .fieldwork-conversation-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 23px 17px; border-bottom: 1px solid var(--line); }
 .fieldwork-conversation-head .fieldwork-kicker { margin: 0 0 5px; }
-.fieldwork-secondary-button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink-soft); font-size: 10px; font-weight: 800; }
+.fieldwork-secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink-soft); font-size: 11px; font-weight: 800; }
 .fieldwork-secondary-button:hover { border-color: color-mix(in srgb, var(--brand-primary) 30%, var(--line)); color: var(--brand-primary); }
-.fieldwork-primary-button { display: inline-flex; align-items: center; gap: 7px; border-radius: 7px; background: var(--brand-primary); padding: 10px 13px; color: white; font-size: 11px; font-weight: 900; text-decoration: none; box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary) 20%, transparent); }
+.fieldwork-primary-button { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border-radius: 7px; background: var(--brand-primary); padding: 10px 14px; color: white; font-size: 11px; font-weight: 900; text-decoration: none; box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary) 20%, transparent); }
 .fieldwork-primary-button:hover { transform: translateY(-1px); filter: saturate(1.1); }
 .fieldwork-inline-link { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-primary); font-size: 11px; font-weight: 900; text-decoration: none; }
 .fieldwork-health-ring { display: flex; width: 156px; height: 156px; align-items: center; justify-content: center; border-radius: 50%; background: conic-gradient(var(--brand-primary) var(--ring-value), var(--paper-deep) 0); }
@@ -180,12 +190,73 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-form-label { display: block; margin-bottom: 6px; color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
 .fieldwork-form-input { display: block; width: 100%; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); padding: 10px 11px; color: var(--ink); font-size: 12px; outline: none; }
 .fieldwork-form-input:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 11%, transparent); }
+.fieldwork-google-button { display: inline-flex; min-height: 44px; width: 100%; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); padding: 10px 14px; font-size: 12px; font-weight: 850; transition: border-color .18s var(--ease-field), box-shadow .18s var(--ease-field), transform .18s var(--ease-field); }
+.fieldwork-google-button:hover { border-color: color-mix(in srgb, var(--brand-primary) 38%, var(--line)); box-shadow: 0 8px 18px rgba(21,32,43,.08); transform: translateY(-1px); }
+.fieldwork-google-button:disabled { cursor: wait; opacity: .65; }
+.fieldwork-google-button svg { width: 18px; height: 18px; flex-shrink: 0; }
+.fieldwork-modal-backdrop { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; overscroll-behavior: contain; background: rgba(21,32,43,.58); padding: 32px 20px; backdrop-filter: blur(10px); }
+.fieldwork-modal-card { display: flex; max-height: calc(100vh - 64px); flex-direction: column; width: min(720px, 100%); overflow-y: auto; border: 1px solid color-mix(in srgb, var(--ink) 15%, var(--line)); border-radius: 14px; background: var(--paper); box-shadow: 0 30px 90px rgba(21,32,43,.28); }
+.fieldwork-modal-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin: 0; border-bottom: 1px solid var(--line); background: var(--paper); padding: 24px 24px 18px; }
+.fieldwork-modal-header h2 { color: var(--ink); font-size: 25px; font-weight: 950; letter-spacing: -.06em; }
+.fieldwork-modal-header p:last-child { max-width: 380px; margin-top: 6px; color: var(--ink-soft); font-size: 12px; line-height: 1.5; }
+.fieldwork-modal-close { display: inline-flex; width: 34px; height: 34px; flex-shrink: 0; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink-soft); }
+.fieldwork-modal-close:hover { border-color: var(--coral); color: var(--coral); }
+.fieldwork-modal-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 24px 24px; }
+.fieldwork-modal-actions { position: sticky; bottom: 0; display: flex; justify-content: flex-end; gap: 9px; margin: 5px -24px -24px; border-top: 1px solid var(--line); background: var(--paper); padding: 15px 24px; }
+.fieldwork-inline-edit { display: inline-flex; align-items: center; gap: 5px; border: 1px solid color-mix(in srgb, var(--brand-primary) 18%, var(--line)); border-radius: 6px; background: color-mix(in srgb, var(--brand-primary) 7%, white); padding: 7px 8px; color: var(--brand-primary); font-size: 10px; font-weight: 850; }
+.fieldwork-inline-edit:hover { border-color: var(--brand-primary); background: color-mix(in srgb, var(--brand-primary) 12%, white); }
+.fieldwork-close-action { display: inline-flex; align-items: center; gap: 5px; border: 1px solid color-mix(in srgb, var(--moss) 25%, var(--line)); border-radius: 6px; background: color-mix(in srgb, var(--moss) 8%, white); padding: 7px 8px; color: var(--moss); font-size: 10px; font-weight: 850; }
+.fieldwork-close-action:hover { background: var(--moss); color: white; }
+.fieldwork-close-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 24px 2px; }
+.fieldwork-close-toggle button { display: flex; min-height: 45px; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink-soft); font-size: 12px; font-weight: 900; }
+.fieldwork-close-toggle button.is-won { border-color: var(--moss); background: color-mix(in srgb, var(--moss) 12%, white); color: var(--moss); }
+.fieldwork-close-toggle button.is-lost { border-color: var(--coral); background: color-mix(in srgb, var(--coral) 11%, white); color: var(--coral); }
+.fieldwork-form-hint { margin-top: 6px; color: var(--ink-faint); font-size: 11px; line-height: 1.45; }
+.fieldwork-currency-input { font-size: 16px; font-weight: 900; }
+.fieldwork-form-builder-grid { display: grid; min-height: 560px; grid-template-columns: minmax(0, 1fr) minmax(320px, .82fr); gap: 18px; }
+.fieldwork-form-builder-stack { display: flex; min-width: 0; flex-direction: column; gap: 18px; }
+.fieldwork-builder-locked, .fieldwork-builder-row { display: flex; min-height: 48px; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.fieldwork-builder-locked { background: var(--paper); color: var(--ink-soft); }
+.fieldwork-builder-locked svg { color: var(--ink-faint); }
+.fieldwork-builder-locked span { flex: 1; font-size: 12px; font-weight: 800; }
+.fieldwork-builder-locked small { color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; text-transform: uppercase; }
+.fieldwork-builder-row { background: white; transition: border-color .18s var(--ease-field), box-shadow .18s var(--ease-field), transform .18s var(--ease-field); }
+.fieldwork-builder-row:hover, .fieldwork-builder-row.is-dragging { border-color: color-mix(in srgb, var(--brand-primary) 40%, var(--line)); box-shadow: 0 9px 20px rgba(21,32,43,.08); }
+.fieldwork-builder-grip { color: var(--ink-faint); }
+.fieldwork-builder-row strong { display: block; overflow: hidden; color: var(--ink); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.fieldwork-builder-row span { display: block; margin-top: 3px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+.fieldwork-builder-delete { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--coral) 22%, var(--line)); border-radius: 7px; background: color-mix(in srgb, var(--coral) 7%, white); color: var(--coral); }
+.fieldwork-builder-delete:hover { background: var(--coral); color: white; }
+.fieldwork-builder-empty { border: 1px dashed var(--line); padding: 36px 18px; color: var(--ink-faint); font-size: 11px; text-align: center; }
+.fieldwork-builder-preview { min-width: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--ink); padding: clamp(18px, 3vw, 32px); }
+.fieldwork-builder-preview-card { border: 1px solid rgba(255,255,255,.14); background: var(--paper); padding: clamp(18px, 3vw, 28px); box-shadow: 10px 12px 0 rgba(49,88,212,.18); }
+.fieldwork-builder-preview-card h2 { color: var(--ink); font-size: 22px; font-weight: 950; letter-spacing: -.06em; }
+.fieldwork-builder-preview-card p:last-child { margin-top: 6px; color: var(--ink-soft); font-size: 11px; line-height: 1.5; }
+.fieldwork-builder-preview-form { display: flex; flex-direction: column; gap: 15px; }
+.fieldwork-preview-input { min-height: 42px; border: 1px solid var(--line); border-radius: 7px; background: white; }
+.fieldwork-preview-input.is-custom { display: flex; align-items: center; border-color: color-mix(in srgb, var(--brand-primary) 30%, var(--line)); background: color-mix(in srgb, var(--brand-primary) 7%, white); padding: 0 11px; }
+.fieldwork-preview-input.is-custom span { color: color-mix(in srgb, var(--brand-primary) 75%, var(--ink)); font-size: 10px; font-weight: 800; }
+.fieldwork-preview-button { display: block; width: 108px; height: 40px; border-radius: 7px; background: var(--brand-primary); }
+.fieldwork-preview-button.is-muted { width: 82px; background: var(--paper-deep); }
+.fieldwork-schedule-box { border: 1px solid var(--line); border-radius: 9px; background: var(--paper); padding: 13px; }
+.fieldwork-schedule-toggle { display: flex; align-items: center; gap: 9px; color: var(--ink); font-size: 12px; font-weight: 850; }
+.fieldwork-schedule-toggle input { width: 16px; height: 16px; accent-color: var(--brand-primary); }
 .fieldwork-filter-bar { padding: 15px; }
 .fieldwork-leads-table { overflow: hidden; }
 .fieldwork-leads-table table { min-width: 960px; }
 .fieldwork-leads-table thead tr { background: var(--paper); border-bottom: 1px solid var(--line); color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
 .fieldwork-leads-table th { padding: 13px 18px; text-align: left; }
 .fieldwork-leads-table td { padding: 16px 18px; border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); font-size: 11px; }
+.fieldwork-filter-count { color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.fieldwork-table-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--line); padding: 18px 22px; }
+.fieldwork-table-header h2 { color: var(--ink); font-size: 19px; font-weight: 950; letter-spacing: -.045em; }
+.fieldwork-table-contact { display: block; color: var(--ink); font-size: 14px; font-weight: 950; text-decoration: none; }
+.fieldwork-table-contact:hover { color: var(--brand-primary); }
+.fieldwork-table-subtext { display: block; margin-top: 5px; color: var(--ink-soft); font-size: 12px; }
+.fieldwork-table-value { display: inline-flex; margin-top: 7px; color: var(--moss); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 900; }
+.fieldwork-table-signals { display: flex; max-width: 240px; flex-direction: column; gap: 3px; color: var(--ink-soft); font-size: 11px; line-height: 1.4; }
+.fieldwork-table-signals .is-muted { color: var(--ink-faint); }
+.fieldwork-table-date { color: var(--ink-soft); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; white-space: nowrap; }
 .fieldwork-lead-row { transition: background .18s var(--ease-field); }
 .fieldwork-lead-row:hover { background: color-mix(in srgb, var(--brand-primary) 4%, white); }
 .fieldwork-table-pill { display: inline-flex; border-radius: 5px; background: color-mix(in srgb, var(--brand-primary) 10%, white); padding: 5px 7px; color: var(--brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; }
@@ -255,11 +326,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-public-nav-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 850; transition: color .18s var(--ease-field); }
 .fieldwork-public-nav-link:hover { color: var(--brand-primary); }
 .fieldwork-public-hero { display: grid; max-width: 1440px; min-height: 650px; margin: 0 auto; grid-template-columns: .92fr 1.08fr; align-items: center; gap: clamp(30px, 6vw, 100px); padding: 80px clamp(20px, 8vw, 120px) 110px; }
-.fieldwork-public-hero-copy h1 { max-width: 650px; margin: 18px 0 24px; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(56px, 7vw, 104px); font-weight: 500; letter-spacing: -.075em; line-height: .91; }
+.fieldwork-public-hero-copy h1 { max-width: 650px; margin: 18px 0 24px; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(48px, 6.2vw, 92px); font-weight: 500; letter-spacing: -.075em; line-height: .93; }
 .fieldwork-public-hero-copy h1 em, .fieldwork-public-section-head h2 em, .fieldwork-public-niches h2 em, .fieldwork-auth-aside h1 em { color: var(--brand-primary); font-style: italic; }
 .fieldwork-public-lede { max-width: 500px; color: var(--ink-soft); font-size: 17px; line-height: 1.65; }
 .fieldwork-public-actions { display: flex; max-width: 430px; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 30px; }
-.fieldwork-public-actions .google-login-button { flex: 1 1 220px; }
+.fieldwork-public-actions .fieldwork-google-button { flex: 1 1 220px; width: auto; }
+.fieldwork-public-actions .fieldwork-primary-button-large { flex: 1 1 180px; }
 .fieldwork-primary-button-large { min-height: 48px; padding: 0 17px; }
 .fieldwork-public-microcopy { display: flex; align-items: center; gap: 6px; margin-top: 17px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; }
 .fieldwork-public-visual { position: relative; min-height: 460px; transform: rotate(1deg); border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); background: #e8ece9; box-shadow: 18px 22px 0 color-mix(in srgb, var(--brand-primary) 16%, transparent); padding: 34px; }
@@ -296,10 +368,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-niche-list span { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(255,255,255,.14); padding: 17px 0; color: #d2d9db; font-size: 12px; }
 .fieldwork-niche-list svg { color: var(--moss); }
 .fieldwork-public-footer { display: flex; max-width: 1440px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 20px; padding: 26px clamp(20px, 5vw, 76px); color: var(--ink-faint); font-size: 10px; }
-.fieldwork-auth-shell { display: grid; min-height: 100vh; grid-template-columns: minmax(340px, .82fr) 1.18fr; background: var(--paper); }
+.fieldwork-auth-shell { display: grid; min-height: 100vh; grid-template-columns: minmax(320px, .72fr) 1.28fr; background: var(--paper); }
 .fieldwork-auth-aside { display: flex; flex-direction: column; justify-content: space-between; background: var(--ink); padding: 34px clamp(28px, 6vw, 90px); color: var(--paper); }
 .fieldwork-auth-aside .fieldwork-wordmark { color: var(--paper); }
-.fieldwork-auth-aside h1 { margin-top: 18px; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(52px, 6vw, 90px); font-weight: 500; letter-spacing: -.08em; line-height: .92; }
+.fieldwork-auth-aside h1 { margin-top: 18px; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(44px, 5.2vw, 78px); font-weight: 500; letter-spacing: -.08em; line-height: .94; }
 .fieldwork-auth-aside p:not(.fieldwork-page-kicker) { max-width: 350px; margin-top: 24px; color: #aeb9bd; font-size: 14px; line-height: 1.7; }
 .fieldwork-auth-aside .fieldwork-page-kicker { color: #91a8ff; }
 .fieldwork-auth-aside-note { color: #788689; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 900; letter-spacing: .12em; }
@@ -310,7 +382,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fieldwork-auth-back { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 850; }
 .fieldwork-auth-icon { display: inline-flex; width: 38px; height: 38px; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--brand-primary) 30%, transparent); border-radius: 11px; background: color-mix(in srgb, var(--brand-primary) 10%, white); color: var(--brand-primary); }
 .fieldwork-auth-icon.is-coral { border-color: color-mix(in srgb, var(--coral) 30%, transparent); background: color-mix(in srgb, var(--coral) 10%, white); color: var(--coral); }
-.fieldwork-auth-card h2 { color: var(--ink); font-size: 31px; font-weight: 950; letter-spacing: -.06em; }
+.fieldwork-auth-card h2 { color: var(--ink); font-size: 34px; font-weight: 950; letter-spacing: -.06em; }
 .fieldwork-auth-card .mb-7 > p:last-child, .fieldwork-auth-card .mb-8 > p:last-child { margin-top: 8px; color: var(--ink-soft); font-size: 12px; line-height: 1.55; }
 .fieldwork-auth-divider { display: flex; align-items: center; gap: 10px; margin: 22px 0; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .fieldwork-auth-divider::before, .fieldwork-auth-divider::after { height: 1px; flex: 1; background: var(--line); content: ''; }
@@ -365,3 +437,64 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 820px) { .fieldwork-inbox-grid { grid-template-columns: 1fr; } .fieldwork-inbox-list { min-height: auto; } .fieldwork-thread-list { max-height: 310px; } .fieldwork-conversation { min-height: 570px; } .fieldwork-conversation-head { align-items: flex-start; flex-direction: column; } .fieldwork-conversation-head > div:last-child { width: 100%; } .fieldwork-secondary-button { flex: 1; justify-content: center; } }
 @media (max-width: 700px) { .fieldwork-lead-hero-main { align-items: flex-start; flex-direction: column; padding: 22px; } .fieldwork-lead-hero-actions { padding: 0 22px 20px; } .fieldwork-lead-stats { grid-template-columns: repeat(2, 1fr); } .fieldwork-lead-stats > div:nth-child(2) { border-right: 0; } }
 @media (prefers-reduced-motion: no-preference) { .fieldwork-panel, .fieldwork-metric { animation: fieldwork-enter .42s var(--ease-field) both; } @keyframes fieldwork-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } }
+
+/* Quality pass: legibility is the primary interaction affordance across every workspace surface. */
+:root { --ink-soft: #53616a; --ink-faint: #7f8b91; --line: #d6d9d3; }
+body { font-size: 14px; }
+.fieldwork-kicker, .fieldwork-page-kicker { font-size: 10px; letter-spacing: .12em; }
+.fieldwork-rail-status { color: var(--ink-soft); font-size: 10px; }
+.fieldwork-nav-item > span > span:last-child { font-size: 11px; }
+.fieldwork-nav-item > span > span:first-child { font-size: 14px; }
+.fieldwork-page-copy { color: #53616a; font-size: 14px; }
+.fieldwork-panel, .fieldwork-metric { box-shadow: 0 12px 32px rgba(21,32,43,.055), 0 1px 3px rgba(21,32,43,.04); }
+.fieldwork-shell, .fieldwork-main, .fieldwork-topbar { min-width: 0; }
+.fieldwork-main { overflow-x: hidden; }
+.fieldwork-metric-label { font-size: 10px; }
+.fieldwork-metric-note { font-size: 12px; }
+.fieldwork-pipeline-tabs button { padding: 9px 12px; font-size: 10px; }
+.fieldwork-pipeline-filter { font-size: 10px; }
+.fieldwork-pipeline-column-head h3 { font-size: 14px; }
+.fieldwork-pipeline-column-head span:last-child { font-size: 10px; }
+.fieldwork-deal-source { font-size: 9px; }
+.fieldwork-deal-contact { font-size: 12px; }
+.fieldwork-deal-meta { font-size: 11px; }
+.fieldwork-deal-footer { font-size: 9px; }
+.fieldwork-task-group > header h2 { font-size: 14px; }
+.fieldwork-task-row h3 { font-size: 13px; }
+.fieldwork-task-row p, .fieldwork-task-row small { font-size: 11px; }
+.fieldwork-thread .text-xs { font-size: 12px; }
+.fieldwork-thread small { font-size: 11px; }
+.fieldwork-form-label { color: #53616a; font-size: 10px; letter-spacing: .08em; }
+.fieldwork-form-input { min-height: 44px; background: #fbfcfa; padding: 10px 12px; font-size: 14px; }
+.fieldwork-primary-button, .fieldwork-secondary-button { min-height: 42px; font-size: 12px; }
+.fieldwork-leads-table thead tr { color: #68767c; font-size: 10px; letter-spacing: .08em; }
+.fieldwork-leads-table td { font-size: 12px; }
+.fieldwork-table-pill, .fieldwork-table-owner { font-size: 10px; }
+.fieldwork-deal-card h4 { font-size: 15px; }
+.fieldwork-deal-contact, .fieldwork-deal-meta, .fieldwork-deal-note { font-size: 11px; }
+.fieldwork-task-row p, .fieldwork-task-row small, .fieldwork-automation-row p { font-size: 11px; }
+.fieldwork-message span { font-size: 10px; }
+.fieldwork-context-strip { font-size: 10px; }
+.fieldwork-public-nav-link { font-size: 12px; }
+.fieldwork-public-microcopy { font-size: 10px; }
+.fieldwork-auth-card .mb-7 > p:last-child, .fieldwork-auth-card .mb-8 > p:last-child { font-size: 13px; }
+.fieldwork-auth-switch { font-size: 12px; }
+.fieldwork-calendar-day i { font-size: 9px; }
+@media (max-width: 700px) {
+  .fieldwork-page-copy { max-width: 100%; font-size: 13px; }
+  .fieldwork-page-title { max-width: 100%; overflow-wrap: normal; }
+  .fieldwork-calendar-day { min-height: 82px; padding: 6px; }
+  .fieldwork-calendar-day i { overflow: hidden; font-size: 8px; }
+  .fieldwork-calendar-day i b { display: block; margin-bottom: 2px; }
+  .fieldwork-calendar-week span { padding: 9px 3px; font-size: 8px; }
+  .fieldwork-calendar-header { align-items: flex-start; flex-direction: column; padding: 18px; }
+  .fieldwork-calendar-header > div:last-child { width: 100%; }
+  .fieldwork-calendar-header > div:last-child .fieldwork-secondary-button { flex: 1; }
+  .fieldwork-auth-main { align-items: flex-start; }
+  .fieldwork-auth-card { padding-top: 8px; }
+  .fieldwork-modal-backdrop { padding: 12px; }
+  .fieldwork-modal-card { max-height: calc(100vh - 24px); border-radius: 11px; }
+  .fieldwork-modal-header { padding: 19px 18px 15px; }
+  .fieldwork-modal-form { padding: 18px; }
+  .fieldwork-modal-actions { margin: 5px -18px -18px; padding: 13px 18px; }
+}

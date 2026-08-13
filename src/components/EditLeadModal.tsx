@@ -1,161 +1,27 @@
 'use client'
 
+import { Pencil, X } from 'lucide-react'
 import { useState } from 'react'
 import { updateLead } from '@/src/app/actions/kanban'
 import CurrencyInput from '@/src/components/CurrencyInput'
 import type { CustomField, FunnelStep, Lead, Member } from '@/src/types/crm'
+import ModalPortal from '@/src/components/ModalPortal'
 
-export default function EditLeadModal({ lead, steps, members, userRole, customFields }: { lead: Lead, steps: FunnelStep[], members: Member[], userRole: string, customFields: CustomField[] }) {
+// Fieldwork OS: editar um lead deve manter a pessoa dentro do contexto, com uma ação clara e pouca fricção.
+export default function EditLeadModal({ lead, steps, members, userRole, customFields }: { lead: Lead; steps: FunnelStep[]; members: Member[]; userRole: string; customFields: CustomField[] }) {
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setLoading(true)
-    setErrorMsg('')
-
-    const formData = new FormData(event.currentTarget)
-    const response = await updateLead(formData)
-
-    setLoading(false)
-
-    if (response.success) {
-      setIsOpen(false)
-      window.location.reload()
-    } else {
-      setErrorMsg(response.error || 'Erro ao atualizar lead')
-    }
-  }
-
   const customData = lead.custom_data || {}
 
-  return (
-    <>
-      <button 
-        onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}
-        className="text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg transition-colors border border-transparent hover:border-blue-200"
-        title="Editar Cadastro do Lead"
-      >
-        Editar
-      </button>
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setLoading(true); setErrorMsg('')
+    const response = await updateLead(new FormData(event.currentTarget)); setLoading(false)
+    if (response.success) { setIsOpen(false); window.location.reload() } else setErrorMsg(response.error || 'Erro ao atualizar lead')
+  }
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
-          <div 
-            onClick={(e) => e.stopPropagation()} 
-            className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 border border-gray-100 my-8 cursor-default"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Editar Lead</h3>
-                <p className="text-xs text-gray-500 mt-0.5">Atualize as informações do cliente rapidamente.</p>
-              </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-600 font-bold text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-              >
-                &times;
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4 text-left">
-              <input type="hidden" name="leadId" value={lead.id} />
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nome do Cliente *</label>
-                <input 
-                  name="name" type="text" defaultValue={lead.name} required
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Telefone / WhatsApp *</label>
-                <input 
-                  name="phone" type="text" defaultValue={lead.phone || ''} required
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail (Opcional)</label>
-                <input 
-                  name="email" type="email" defaultValue={lead.email || ''}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {customFields && customFields.map((field) => (
-                <div key={field.id}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">{field.field_label}</label>
-                  {field.field_type === 'money' ? (
-                    <CurrencyInput 
-                      name={`custom_${field.field_key}`}
-                      defaultValue={customData[field.field_key] || ''}
-                      placeholder={`Informe ${field.field_label.toLowerCase()}`}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : (
-                    <input 
-                      name={`custom_${field.field_key}`}
-                      type={field.field_type || 'text'}
-                      defaultValue={customData[field.field_key] || ''}
-                      placeholder={`Informe ${field.field_label.toLowerCase()}`}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  )}
-                </div>
-              ))}
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Observações Finais</label>
-                <textarea 
-                  name="observation" rows={3} defaultValue={lead.observation || ''}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                ></textarea>
-              </div>
-
-              {userRole === 'admin' && members && members.length > 0 && (
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">Responsável</label>
-                  <select 
-                    name="assignedTo" defaultValue={lead.assigned_to || ''}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    {members.map((member) => (
-                      <option key={member.id} value={member.id}>{member.full_name} ({member.role})</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Etapa do Funil</label>
-                <select 
-                  name="stepId" defaultValue={lead.step_id || ''}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {steps.map((step) => (
-                    <option key={step.id} value={step.id}>{step.title}</option>
-                  ))}
-                </select>
-              </div>
-
-              {errorMsg && (
-                <div className="text-red-500 text-xs bg-red-50 p-3 rounded-xl border border-red-100">
-                  {errorMsg}
-                </div>
-              )}
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">Cancelar</button>
-                <button type="submit" disabled={loading} className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm">{loading ? 'Salvando...' : 'Salvar Alterações'}</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  )
+  return <>
+    <button type="button" onClick={(event) => { event.stopPropagation(); setIsOpen(true) }} className="fieldwork-inline-edit" title="Editar lead"><Pencil size={13} /> Editar</button>
+    {isOpen && <ModalPortal><div className="fieldwork-modal-backdrop" onClick={() => setIsOpen(false)}><div className="fieldwork-modal-card" onClick={(event) => event.stopPropagation()}><header className="fieldwork-modal-header"><div><p className="fieldwork-page-kicker">Contexto do lead</p><h2>Editar lead</h2><p>Atualize o contexto sem perder o próximo passo.</p></div><button type="button" onClick={() => setIsOpen(false)} className="fieldwork-modal-close" aria-label="Fechar"><X size={17} /></button></header><form onSubmit={handleSubmit} className="fieldwork-modal-form"><input type="hidden" name="leadId" value={lead.id} /><div><label className="fieldwork-form-label" htmlFor={`edit-lead-name-${lead.id}`}>Nome do contacto *</label><input id={`edit-lead-name-${lead.id}`} name="name" type="text" defaultValue={lead.name} required className="fieldwork-form-input" /></div><div className="grid grid-cols-1 gap-4 sm:grid-cols-2"><div><label className="fieldwork-form-label" htmlFor={`edit-lead-phone-${lead.id}`}>Telefone / WhatsApp *</label><input id={`edit-lead-phone-${lead.id}`} name="phone" type="text" defaultValue={lead.phone || ''} required className="fieldwork-form-input" /></div><div><label className="fieldwork-form-label" htmlFor={`edit-lead-email-${lead.id}`}>E-mail</label><input id={`edit-lead-email-${lead.id}`} name="email" type="email" defaultValue={lead.email || ''} className="fieldwork-form-input" /></div></div>{customFields?.map((field) => <div key={field.id}><label className="fieldwork-form-label" htmlFor={`edit-lead-${lead.id}-${field.field_key}`}>{field.field_label}</label>{field.field_type === 'money' ? <CurrencyInput name={`custom_${field.field_key}`} defaultValue={customData[field.field_key] || ''} placeholder={`Informe ${field.field_label.toLowerCase()}`} className="fieldwork-form-input" /> : <input id={`edit-lead-${lead.id}-${field.field_key}`} name={`custom_${field.field_key}`} type={field.field_type || 'text'} defaultValue={customData[field.field_key] || ''} placeholder={`Informe ${field.field_label.toLowerCase()}`} className="fieldwork-form-input" />}</div>)}<div><label className="fieldwork-form-label" htmlFor={`edit-lead-observation-${lead.id}`}>Observações finais</label><textarea id={`edit-lead-observation-${lead.id}`} name="observation" rows={3} defaultValue={lead.observation || ''} className="fieldwork-form-input min-h-[92px] resize-none" /></div>{(userRole === 'admin' || userRole === 'owner') && members?.length > 0 && <div><label className="fieldwork-form-label" htmlFor={`edit-lead-owner-${lead.id}`}>Responsável</label><select id={`edit-lead-owner-${lead.id}`} name="assignedTo" defaultValue={lead.assigned_to || ''} className="fieldwork-form-input">{members.map((member) => <option key={member.id} value={member.id}>{member.full_name} ({member.role})</option>)}</select></div>}<div><label className="fieldwork-form-label" htmlFor={`edit-lead-step-${lead.id}`}>Etapa do pipeline</label><select id={`edit-lead-step-${lead.id}`} name="stepId" defaultValue={lead.step_id || ''} className="fieldwork-form-input">{steps.map((step) => <option key={step.id} value={step.id}>{step.title}</option>)}</select></div>{errorMsg && <div className="fieldwork-auth-error">{errorMsg}</div>}<footer className="fieldwork-modal-actions"><button type="button" onClick={() => setIsOpen(false)} className="fieldwork-secondary-button">Cancelar</button><button type="submit" disabled={loading} className="fieldwork-primary-button disabled:opacity-50">{loading ? 'A guardar...' : 'Guardar alterações'}</button></footer></form></div></div></ModalPortal>}
+  </>
 }

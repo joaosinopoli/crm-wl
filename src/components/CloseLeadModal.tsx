@@ -1,115 +1,16 @@
 'use client'
 
+import { CheckCircle2, CircleX, Trophy, X } from 'lucide-react'
 import { useState } from 'react'
 import { closeLead } from '@/src/app/actions/kanban'
 import CurrencyInput from '@/src/components/CurrencyInput'
+import ModalPortal from '@/src/components/ModalPortal'
 
-type Lead = {
-  id: string
-  name: string
-  lead_value?: number | null
-}
+type Lead = { id: string; name: string; lead_value?: number | null }
 
+// Fieldwork OS: fechar uma negociação deve tornar o resultado explícito e preservar a aprendizagem comercial.
 export default function CloseLeadModal({ lead }: { lead: Lead }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [status, setStatus] = useState<'won' | 'lost'>('won')
-  const [loading, setLoading] = useState(false)
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
-
-    const formData = new FormData(e.currentTarget)
-    formData.append('status', status)
-    formData.append('leadId', lead.id)
-
-    const response = await closeLead(formData)
-    setLoading(false)
-
-    if (response.success) {
-      setIsOpen(false)
-      window.location.reload()
-    }
-  }
-
-  return (
-    <>
-      <button 
-        onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}
-        className="text-[11px] font-bold text-green-700 bg-green-100 hover:bg-green-200 px-2 py-1.5 rounded-lg transition-colors border border-green-200"
-        title="Finalizar Venda (Ganho ou Perdido)"
-      >
-        ✓ Finalizar
-      </button>
-
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Finalizar Negociação</h3>
-                <p className="text-xs text-gray-500 mt-0.5">Cliente: {lead.name}</p>
-              </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:bg-gray-100 w-8 h-8 rounded-full">&times;</button>
-            </div>
-
-            <div className="flex gap-2 mb-6">
-              <button 
-                type="button"
-                onClick={() => setStatus('won')}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-colors ${status === 'won' ? 'bg-green-500 text-white border-green-600 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}
-              >
-                Ganha 🏆
-              </button>
-              <button 
-                type="button"
-                onClick={() => setStatus('lost')}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-colors ${status === 'lost' ? 'bg-red-500 text-white border-red-600 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}
-              >
-                Perdida ❌
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {status === 'won' ? (
-                <div className="animate-fade-in">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">Valor da Venda (R$)</label>
-                  
-                  {/* Nosso componente inteligente de máscara injetado aqui */}
-                  <CurrencyInput 
-                    name="leadValue" 
-                    defaultValue={lead.lead_value || ''}
-                    required={true}
-                    placeholder="R$ 0,00"
-                    className="w-full px-4 py-3 border-2 border-green-400 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-green-600 bg-white text-gray-900 font-black placeholder-gray-400 shadow-sm"
-                  />
-                  
-                  <p className="text-[10px] text-gray-400 mt-1">Este valor será contabilizado no seu Resumo Financeiro.</p>
-                </div>
-              ) : (
-                <div className="animate-fade-in">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">Motivo da Perda</label>
-                  <textarea 
-                    name="observation" 
-                    rows={2}
-                    required
-                    placeholder="Ex: Achou caro, comprou no concorrente..."
-                    className="w-full px-3 py-2 border border-red-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 bg-red-50 text-gray-900 resize-none"
-                  ></textarea>
-                </div>
-              )}
-
-              <button 
-                type="submit" 
-                disabled={loading}
-                className="w-full py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-black disabled:opacity-50 mt-4 shadow-sm"
-              >
-                {loading ? 'Processando...' : 'Confirmar e Arquivar'}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  )
+  const [isOpen, setIsOpen] = useState(false); const [status, setStatus] = useState<'won' | 'lost'>('won'); const [loading, setLoading] = useState(false)
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) { event.preventDefault(); setLoading(true); const formData = new FormData(event.currentTarget); formData.append('status', status); formData.append('leadId', lead.id); const response = await closeLead(formData); setLoading(false); if (response.success) { setIsOpen(false); window.location.reload() } }
+  return <><button type="button" onClick={(event) => { event.stopPropagation(); setIsOpen(true) }} className="fieldwork-close-action"><CheckCircle2 size={13} /> Finalizar</button>{isOpen && <ModalPortal><div className="fieldwork-modal-backdrop" onClick={() => setIsOpen(false)}><div className="fieldwork-modal-card max-w-md" onClick={(event) => event.stopPropagation()}><header className="fieldwork-modal-header"><div><p className="fieldwork-page-kicker">Resultado da negociação</p><h2>Fechar negócio.</h2><p>{lead.name}</p></div><button type="button" onClick={() => setIsOpen(false)} className="fieldwork-modal-close" aria-label="Fechar"><X size={17} /></button></header><div className="fieldwork-close-toggle"><button type="button" onClick={() => setStatus('won')} className={status === 'won' ? 'is-won' : ''}><Trophy size={15} /> Ganha</button><button type="button" onClick={() => setStatus('lost')} className={status === 'lost' ? 'is-lost' : ''}><CircleX size={15} /> Perdida</button></div><form onSubmit={handleSubmit} className="fieldwork-modal-form">{status === 'won' ? <div><label className="fieldwork-form-label" htmlFor={`close-value-${lead.id}`}>Valor da venda</label><CurrencyInput name="leadValue" defaultValue={lead.lead_value || ''} required placeholder="R$ 0,00" className="fieldwork-form-input fieldwork-currency-input" /><p className="fieldwork-form-hint">Este valor entra na leitura financeira do workspace.</p></div> : <div><label className="fieldwork-form-label" htmlFor={`close-observation-${lead.id}`}>Motivo da perda</label><textarea id={`close-observation-${lead.id}`} name="observation" rows={3} required placeholder="Ex.: timing, preço ou concorrência..." className="fieldwork-form-input min-h-[100px] resize-none" /></div>}<button type="submit" disabled={loading} className="fieldwork-primary-button w-full justify-center disabled:opacity-50">{loading ? 'A processar...' : 'Confirmar e arquivar'}</button></form></div></div></ModalPortal>}</>
 }

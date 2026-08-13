@@ -45,3 +45,14 @@
 - [ ] Implementar inbox de conversas, detalhe do lead e timeline unificada.
 - [ ] Redesenhar pipeline, cadências, tarefas, relatórios e segmentação.
 - [ ] Validar estados vazios, loading, erros, permissões e experiência mobile.
+
+## Revisão visual crítica — Fieldwork OS
+
+- [ ] Auditar desktop e mobile das páginas públicas e autenticadas, identificando quebras de layout e zonas de baixa legibilidade.
+- [ ] Corrigir tipografia, contraste, largura de leitura, densidade de informação e hierarquia dos componentes principais.
+- [ ] Normalizar botões, inputs, tabelas, painéis, modais e estados vazios num sistema visual único.
+- [ ] Rever o rail, topbar e shell responsivo para evitar cortes, overflow e perda de contexto em ecrãs pequenos.
+- [ ] Validar visualmente dashboard, pipeline, inbox, leads, tarefas, agenda, relatórios, settings, login e signup antes de publicar.
+- [ ] Corrigir o modal de leads que aparece cortado no viewport, com scroll interno inadequado e fundo da página ainda excessivamente presente.
+- [ ] Aumentar a escala mínima de texto, labels, inputs e navegação; o shell não pode depender de microtipografia para caber no ecrã.
+- [ ] Rever a largura útil da área autenticada e a relação rail/conteúdo para que títulos, métricas e filtros não fiquem comprimidos.
